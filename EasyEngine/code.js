@@ -17,12 +17,13 @@ function StartScript(){
     const Shape = window.Shape;
     const Color = window.Color;
     
-    let player = new Shape("rect", Color.Black);
+    let player = new Shape("rect", Color.Red);
     plr = player;
-    player.transform.position = new Vector2(200, 200);
-    player.transform.scale = new Vector2(75, 75);
+    player.transform.position = new Vector2(0, 0);
+    player.transform.scale = new Vector2(100, 100);
+    Engine.WindowSize = new Vector2(1400, 650);
 
-    let true_speed = 40;
+    let true_speed = 80;
     tru_spd = true_speed;
     let speed = true_speed * Engine.deltaTime;
 
