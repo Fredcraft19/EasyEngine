@@ -28,8 +28,21 @@ window.Engine = class Engine{
 
     static #oldTime = Date.now();
 
+    static isFullscreen = false;
+    static WindowSize = new Vector2(800, 500);
+
     // renders frame
     static #RenderFrame(){
+
+        if(this.isFullscreen){
+            this.#canvas.width = window.innerWidth;
+            this.#canvas.height = window.innerHeight;
+        }
+        else{
+            this.#canvas.width = this.WindowSize.x;
+            this.#canvas.height = this.WindowSize.y;
+        }
+
         this.#draw.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
         // Render
         this.deltaTime = (Date.now() - this.#oldTime) / 1000;
@@ -103,6 +116,7 @@ window.Engine = class Engine{
         // Get Canvas from ID
         this.#canvas = document.getElementById(canvas_id);
         this.#draw = this.#canvas.getContext('2d');
+
         // Call all start functions
         for(let i = 0; i < this.#starts.length; i++){
             this.#starts[i]();
