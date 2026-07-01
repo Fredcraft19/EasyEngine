@@ -5,7 +5,7 @@ async function async_main(){
     // script directorys
     const scripts = [
         'engine/math.js',
-        'engine/conponents.js',
+        'engine/components.js',
         'engine/engine.js',
         // Just sends 'engine-loaded' event out
         'engine/event.js'
