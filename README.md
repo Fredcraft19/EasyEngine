@@ -11,11 +11,9 @@ To get just the engine's source files, install the latest relase.
 ## Features
 Too early to say..
 ## Planned Features
-Easy Object creation with something like:
-```js
-game_obj = new Object();
-```
-'Object' class will have a very simalar layout to Unity's GameObject.
+Working Game Engine.
+* ECS like Unity
+* Runs at playable fps (60+ FPS)
 
 ## Documentation
 Go to 'Documentation.MD' for the EasyEngine's documentation.
