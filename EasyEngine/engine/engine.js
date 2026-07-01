@@ -128,4 +128,3 @@ window.Engine = class Engine{
             }, 1000/this.#targetFps);
     }
 }
-
