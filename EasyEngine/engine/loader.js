@@ -4,9 +4,13 @@ async function async_main(){
 
     // script directorys
     const scripts = [
+        'engine/matter/matter.js',
         'engine/math.js',
         'engine/components.js',
         'engine/engine.js',
+        'engine/gameobject.js',
+        'engine/input.js',
+        
         // Just sends 'engine-loaded' event out
         'engine/event.js'
     ];
@@ -18,7 +22,7 @@ async function async_main(){
         ref.defer = true;
         document.head.appendChild(ref);
         console.log("Injected script: " + script);
-        await sleep(10);
+        await sleep(75);
     };
 }
 async_main();
