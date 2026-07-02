@@ -76,7 +76,7 @@ window.Engine = class Engine{
         this.#RenderFrame();
 
         // Run Update
-        for(let x = 0; x < this.#starts.length; x++){
+        for(let x = 0; x < this.#updates.length; x++){
             this.#updates[x]();
         }
     }
