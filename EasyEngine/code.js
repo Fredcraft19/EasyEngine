@@ -11,7 +11,8 @@ window.addEventListener("engine-loaded", () => {
 });
 
 let plr = null;
-let tru_spd = null
+let tru_spd = null;
+let fps = 0;
 
 function StartScript(){
     
@@ -27,12 +28,16 @@ function StartScript(){
     Engine.WindowSize = new Vector2(800, 500);
 
     let x = [];
-    for(let i = 0; i < 500; i++){
-        x.push(new Shape("circle", Color.Blue));
+    for(let i = 0; i < 5000; i++){
+        col = new Color(Math.round(Math.random() * 255), Math.round(Math.random() * 255), Math.round(Math.random() * 255), 25);
+        col = new Color(12, 155, 230);
+        col.a = 25;
+        x.push(new Shape("circle", col));
     }
 
     x.forEach(obj => {
         obj.transform.scale = new Vector2(10, 10);
+        
     });
 
     let true_speed = 80;
@@ -57,17 +62,20 @@ function StartScript(){
         Engine.AddShape(player); 
         x.forEach(obj => {
         Engine.AddShape(obj);
+        obj.transform.position.y = 0;
+        obj.transform.position.x = Math.round(Math.random() * Engine.WindowSize.x);
         });
+        
     }
 
     // called every engine update at TargetFPS rate
     function Update(){
-        console.log("FPS: "+Math.round((1.0 / Engine.deltaTime)));
-        console.clear();
-        console.log("FPS: "+Math.round((1.0 / Engine.deltaTime)));
-
+        fps = Math.round(1 / Engine.deltaTime);
         x.forEach(obj => {
-            obj.transform.position = new Vector2(Math.round(Math.random() * window.innerWidth), Math.round(Math.random() * window.innerHeight));
+            obj.transform.position.y += Math.round(Math.random() * 500) * Engine.deltaTime;
+            if(obj.transform.position.y > Engine.WindowSize.y){
+                obj.transform.position.y = -10;
+            }
         });
 
         speed = true_speed * Engine.deltaTime;
