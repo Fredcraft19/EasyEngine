@@ -15,5 +15,10 @@ Working Game Engine.
 * ECS like Unity
 * Runs at playable fps (60+ FPS)
 
+## Physics
+EasyEngine uses 'Matter.js' for its physics.
+
+For more information of Matter.js, go to their [repository](https://github.com/liabru/matter-js/tree/master)
+
 ## Documentation
 Go to 'Documentation.MD' for the EasyEngine's documentation.
