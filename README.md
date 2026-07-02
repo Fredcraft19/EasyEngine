@@ -9,11 +9,16 @@ is just a working example showing how to use the engine, not part of it.
 
 To get just the engine's source files, install the latest relase.
 ## Features
-Too early to say..
+* Physics with matter.js
+* Ability to view+see FPS
+* Fullscreen or Set Canvas size
+* Custom Scripting logic (just in code.js for now, no custom components yet)
 ## Planned Features
-Working Game Engine.
-* ECS like Unity
-* Runs at playable fps (60+ FPS)
+* Custom Components
+* Maybe an in-browser editor
+* Ability to build your project*
+
+*Without the in-browser editor files in the way. It should just be an easeir way to share the build game. (Don't know how im gonna do it)
 
 ## Physics
 EasyEngine uses 'Matter.js' for its physics.
