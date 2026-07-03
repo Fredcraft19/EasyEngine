@@ -71,6 +71,12 @@ window.Engine = class Engine{
             
         });
     }
+    static #UpdatePhysics(){
+        if(this.deltaTime > 0.1){
+            this.deltaTime = 0.1;
+        }
+        Matter.Engine.update(window.physicsEngine, this.deltaTime);
+    }
 
     // Updates engine by:
     // Rendering everything,
@@ -82,7 +88,7 @@ window.Engine = class Engine{
             this.#updates[x]();
         }
 
-        Matter.Engine.update(window.physicsEngine, this.deltaTime);
+        this.#UpdatePhysics();
 
         this.#RenderFrame();     
     }
@@ -103,6 +109,10 @@ window.Engine = class Engine{
         if(this.#running){
             method();
         }
+    }
+
+    static get GameObjects(){
+        return this.#gameobjects;
     }
 
     static AddUpdate(method){
