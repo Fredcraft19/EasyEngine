@@ -1,5 +1,6 @@
 window.GameObject = class GameObject{
     name = "";
+    tag = "default";
     transform = null;
     renderer = null;
     // custom/optional conponents such as rigidbody
@@ -14,6 +15,9 @@ window.GameObject = class GameObject{
 
         this.renderer.gameObject = this;
         this.transform.gameObject = this;
+    }
+    EngineReference(){
+        return Engine;
     }
     AddComponent(component){
         this.components.push(component);
