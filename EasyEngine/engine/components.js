@@ -68,9 +68,48 @@ Components.Renderer = class Renderer extends Component{
 
 // OPTIONAL CONPOENENTS
 
+Components.Trigger = class Trigger extends Component{
+    name = "Trigger";
+    transform = null;
+    trigger_size = new Vector2(0, 0);
+    match_transform = false;
+    thickness = 0.1;
+    
+    #trigger_max = 0;
+
+    constructor(size = new Vector2(1, 1), match_transform = false){
+        this.match_transform = match_transform;
+        this.trigger_size = size;
+        this.transform = this.gameObject.transform;
+    }
+
+    Update(){
+        if(this.match_transform){
+            if((this.trigger_size.x != (this.transform.scale.x + this.thickness)) && (this.trigger_size.y != (this.transform.scale.y + this.thickness)) ){
+                this.trigger_size = new Vector2(this.transform.scale.x + this.thickness, this.transform.scale.y + this.thickness);
+            }
+        }
+        // check collisions
+
+        Engine = this.gameObject.EngineReference();
+
+        Engine.GameObjects().forEach(obj => {
+            comp = this.transform.posiiton.subtract(obj.transform.position);
+            // If object is inside trigger
+            if  (!(comp.x > this.#trigger_max || -comp.x < -this.#trigger_max) &&   // X
+                !(comp.y > this.#trigger_max || -comp.y < -this.#trigger_max)){     // Y
+
+                evt = new CustomEvent(this.gameObject.name + ' trigger', {tag: obj.tag});
+                window.dispatchEvent(evt);
+            }
+        });
+    }
+}
+
+
 const Matter = window.Matter;
 const MatterEngine = window.physicsEngine;
-window.physicsEngine.world.gravity.y = 250000;
+window.physicsEngine.world.gravity.y = 0; // was 250000
 
 
 Components.PhysicBody = class PhysicBody extends Component{
@@ -78,8 +117,10 @@ Components.PhysicBody = class PhysicBody extends Component{
     transform = null;
     body = null;
 
-    friction = 10;;
+    mass = 5;
+    friction = 10;
     solid = false;
+    inertia = 0.5;
 
     velocity = new Vector2(0, 0);
 
@@ -97,6 +138,8 @@ Components.PhysicBody = class PhysicBody extends Component{
 
         this.body.friction = this.friction;
         Matter.Body.setStatic(this.body, this.solid);
+        //Matter.Body.setInertia(this.body, this.inertia);
+        //Matter.Body.setMass(this.body, this.mass);
     }
 
     Update(){
@@ -104,7 +147,7 @@ Components.PhysicBody = class PhysicBody extends Component{
 
         this.transform.position.x = this.body.position.x;
         this.transform.position.y = this.body.position.y;
-        this.transform.rotation = this.body.angle;
+        this.transform.rotation = this.body.angle * 180 / Math.PI;
     }
 
     AddForce(force){
