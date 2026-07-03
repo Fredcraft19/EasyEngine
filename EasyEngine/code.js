@@ -1,6 +1,10 @@
 // This event listener is essentail as we dont want the
 // game script to start running before the engine is loaded.
 
+// F12 Accessable variables (for debugging)
+rb = null;
+pl = null;
+
 window.addEventListener("engine-loaded", () => {
     // Engine setup
     Engine.fullscreen = true;
@@ -12,18 +16,30 @@ window.addEventListener("engine-loaded", () => {
     player.transform.scale = new Vector2(100, 100);
     player.transform.position = new Vector2(Engine.WindowSize.x / 2, 200);
     pb = new Components.PhysicBody();
+    pb.inertia = 0.7;
+    //pb.mass = 5;
     player.AddComponent(pb);
-    player.renderer.color = Color.Blue;
+    player.renderer.color = Color.Red;
+    rb = pb;
+    pl = player;
 
-    glb_scale = 10
+    glb_scale = 5
 
-    for(let i = 0; i < 750; i++){   // any more and the thread will die
-        ball = new GameObject("ball", "rect");
+    parts = []
+    red = false;
+    for(let i = 0; i < 1000; i++){   // any more and the thread will die
+        red = !red;
+        ball = new GameObject("ball", "circle");
         ball.transform.scale = new Vector2(glb_scale, glb_scale);
-        ball.transform.position = new Vector2(50 + Math.round(Math.random() * 1400), 10+Math.round(Math.random() * 50));
+        ball.transform.position = new Vector2(150 + Math.round(Math.random() * (Engine.WindowSize.x - 250)), 50 + Math.round(Math.random() * 500));
+        
         phy = new Components.PhysicBody();
         ball.AddComponent(phy);
-        ball.renderer.color = Color.Yellow;
+        ball.renderer.color = Color.Blue;
+        if(red) {ball.renderer.color = Color.Magenta;
+            ball.transform.position = new Vector2(50 + Math.round(Math.random() * (Engine.WindowSize.x - 250)), 50 + Math.round(Math.random() * 500));
+        }
+        parts.push(phy);
     }
 
     ground = new GameObject("ground", "rect");
@@ -31,6 +47,7 @@ window.addEventListener("engine-loaded", () => {
     ground.transform.position.x = Engine.WindowSize.x / 2;
     ground.transform.scale = new Vector2(1500, 250);
     ground.renderer.color = Color.Red;
+    ground.renderer.display = false;
     ground_pb = new Components.PhysicBody();
     ground_pb.solid = true;
     ground.AddComponent(ground_pb);
@@ -40,6 +57,8 @@ window.addEventListener("engine-loaded", () => {
     ground.transform.position.x = Engine.WindowSize.x / 2;
     ground.transform.scale = new Vector2(1500, 250);
     ground.renderer.color = Color.Red;
+        ground.renderer.display = false;
+
     roof = new Components.PhysicBody();
     roof.solid = true;
     ground.AddComponent(roof);
@@ -49,6 +68,8 @@ window.addEventListener("engine-loaded", () => {
     ground.transform.position.x = Engine.WindowSize.x;
     ground.transform.scale = new Vector2(150, 15000);
     ground.renderer.color = Color.Red;
+        ground.renderer.display = false;
+
     x = new Components.PhysicBody();
     x.solid = true;
     ground.AddComponent(x);
@@ -58,6 +79,8 @@ window.addEventListener("engine-loaded", () => {
     ground.transform.position.x = 0;
     ground.transform.scale = new Vector2(150, 15000);
     ground.renderer.color = Color.Red;
+        ground.renderer.display = false;
+
     y = new Components.PhysicBody();
     y.solid = true;
     ground.AddComponent(y);
@@ -65,7 +88,7 @@ window.addEventListener("engine-loaded", () => {
 
     // Game Logic
 
-    speed = 5000;
+    speed = 50000;
     
     function Start(){
 
@@ -84,6 +107,13 @@ window.addEventListener("engine-loaded", () => {
         if(Input.key["d"]){
             pb.AddForce(new Vector2(speed, 0));
         }
+        if(Input.key["e"]){
+            pb.SetVelocity(new Vector2(0, 0));
+        }
+
+        parts.forEach(part => {
+            part.AddForce(new Vector2(Math.round(Math.random() * 500) - 250, Math.round(Math.random() * 500) - 250));
+        });
     }
 
     Engine.AddStart(Start);
