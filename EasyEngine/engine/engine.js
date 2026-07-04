@@ -62,7 +62,7 @@ window.Engine = class Engine{
                 }
                 else if(shape.renderer.type == "circle"){
                     this.#draw.beginPath();
-                    this.#draw.arc(-(shape.transform.scale.x / 2), -(shape.transform.scale.x / 2), shape.transform.scale.x, 0, 2 * Math.PI);
+                    this.#draw.arc(0, 0, shape.transform.scale.x / 2, 0, 2 * Math.PI);
                     this.#draw.fill();  
                     this.#draw.closePath();
                 }
