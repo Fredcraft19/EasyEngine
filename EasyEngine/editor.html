@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+
+        <title id="tt">Loading Editor..</title>
+        <link rel="icon" type="image/png" href="ui/icon.png">
+
+        <link rel="stylesheet" href="ui/style.css">
+        <script src="engine/loader.js"></script>
+
+    </head>
+
+    <body>
+        <p class="tiny">|</p>
+        <div class="main">
+
+            <div class="hierarchy" id="hierarchy">
+
+                <h1>Hierarchy</h1>
+
+            </div>
+
+            <div class="center-area">
+
+                <div class="game-controls">
+                    <p class="tiny">|</p>
+                    <p class="medium-text" id="tv">Loading..</p>
+                    <p>|</p>
+                    <button id="build">Build</button>
+                    <button id="save">Save</button>
+                    <button id="load">Load</button>
+                    <p>|</p>
+                    <button id="play">Play</button>
+                    <button id="pause">Pause</button>
+                    <p>|</p>
+                    <p id="fps_count" class="small-text">FPS: -</p>
+                </div>
+
+                <div class="gameview">
+                    <canvas id="canvas" width="640" height="360"></canvas>
+                </div>
+
+                <div class="asset-area">
+                    <h1>Assets</h1>
+
+                </div>
+
+            </div>
+
+            <div class="inspector">
+                <h1>Inspector</h1>
+                <input type="checkbox">IsAlive?
+            </div>
+
+        </div>
+
+        <p class="tiny">|</p>
+
+        <script src="ui/editor.js"></script>
+    </body>
+
+</html>
