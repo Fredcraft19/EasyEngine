@@ -19,24 +19,33 @@ window.addEventListener("engine-loaded", () => {
     pb.inertia = 0.7;
     //pb.mass = 5;
     player.AddComponent(pb);
-    player.renderer.color = Color.Red;
+    player.renderer.color = Color.Black;
     rb = pb;
     pl = player;
 
-    glb_scale = 5
+    glb_scale = 12
 
     parts = []
     red = false;
-    for(let i = 0; i < 1000; i++){   // any more and the thread will die
+    for(let i = 0; i < 1200; i++){   // any more and the thread will die
         red = !red;
-        ball = new GameObject("ball", "circle");
+        ball = null;
+        if (red) {
+            ball = new GameObject("ball", "circle");
+
+        }
+        else {
+            ball = new GameObject("ball", "circle");
+
+        }
         ball.transform.scale = new Vector2(glb_scale, glb_scale);
         ball.transform.position = new Vector2(150 + Math.round(Math.random() * (Engine.WindowSize.x - 250)), 50 + Math.round(Math.random() * 500));
         
         phy = new Components.PhysicBody();
         ball.AddComponent(phy);
         ball.renderer.color = Color.Blue;
-        if(red) {ball.renderer.color = Color.Magenta;
+        if (red) {
+            ball.renderer.color = Color.Blue;
             ball.transform.position = new Vector2(50 + Math.round(Math.random() * (Engine.WindowSize.x - 250)), 50 + Math.round(Math.random() * 500));
         }
         parts.push(phy);
@@ -112,7 +121,8 @@ window.addEventListener("engine-loaded", () => {
         }
 
         parts.forEach(part => {
-            part.AddForce(new Vector2(Math.round(Math.random() * 500) - 250, Math.round(Math.random() * 500) - 250));
+            //part.AddForce(new Vector2(Math.round(Math.random() * 50) - 25, Math.round(Math.random() * 50) - 25));
+            //part.AddForce(new Vector2(0, -10));
         });
     }
 
