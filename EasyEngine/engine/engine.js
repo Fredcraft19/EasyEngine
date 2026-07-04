@@ -40,6 +40,7 @@ window.Engine = class Engine{
 
     // renders frame
     static #RenderFrame() {
+        console.log("drawcall");
         // Clear Last Frame
         this.#draw.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
 
@@ -100,7 +101,7 @@ window.Engine = class Engine{
     // Rendering everything,
     // Running all Update Methods on scripts.
 
-    static #Update(){
+    static Update(){
         // Every Engine update:
         for(let x = 0; x < this.#updates.length; x++){
             this.#updates[x]();
@@ -118,7 +119,7 @@ window.Engine = class Engine{
             this.#targetFps = newFPS;
 
             this.#interval = setInterval(() => {
-                this.#Update();
+                this.Update();
             }, 1000 / this.#targetFps);
         }
         else {
@@ -184,7 +185,7 @@ window.Engine = class Engine{
 
         // Engine start logic
         this.#interval = setInterval(() => {
-                this.#Update();
+                this.Update();
             }, 1000/this.#targetFps);
     }
 }
