@@ -1,5 +1,7 @@
 // Main engine code
 window.Engine = class Engine{
+    static version = "pre1";
+
     /** @type {CanvasRenderingContext2D} */
     static #draw = null;
     static #canvas = null;
@@ -25,15 +27,23 @@ window.Engine = class Engine{
 
 
     static fullscreen = false;
-    static WindowSize = new Vector2(800, 500);
-    static #memorySize = this.WindowSize;
+
+    static DisplaySize = new Vector2(640, 540);     // Actual Canvas size
+    static GameSize = new Vector2(1920, 1080);      // for everything game logic related. use this.
+
+    static global_scale = 1;
+    static display_scale = 0;
+
+    static #memorySize = null;
 
     static updates = this.#updates;
 
     // renders frame
-    static #RenderFrame(){
+    static #RenderFrame() {
+        // Clear Last Frame
         this.#draw.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
-        // Render
+
+        // Get FPS data
         this.deltaTime = (Date.now() - this.#oldTime) / 1000;
         this.#oldTime = Date.now();
         this.#frametime += this.deltaTime;
@@ -44,11 +54,17 @@ window.Engine = class Engine{
             this.#framecount = 0;
         }
 
+        // Render
         this.#gameobjects.forEach(shape => {
             // if there is no renderer. dont render. duh
             if (shape.renderer != null && shape.renderer.display) {
-                this.#draw.save();
                 // for every shape in shapes[] list, render it.
+
+                this.#draw.save();
+
+                this.display_scale = this.#canvas.width / this.GameSize.x;
+
+                this.#draw.scale(this.display_scale, this.display_scale);
 
                 this.#draw.fillStyle = shape.renderer.color.GetRGB();
 
@@ -56,6 +72,7 @@ window.Engine = class Engine{
                 let rad_ical = shape.transform.rotation * Math.PI / 180;
 
                 this.#draw.translate(shape.transform.position.x, shape.transform.position.y);
+
                 this.#draw.rotate(rad_ical);
 
                 if(shape.renderer.type == "rectangle" || shape.renderer.type == "square" || shape.renderer.type == "rect"){
@@ -96,12 +113,16 @@ window.Engine = class Engine{
 
     // sets target fps
     static SetTargetFPS(newFPS){
-        this.#targetFps = newFPS;
         clearInterval(this.#interval);
-        if(this.#running){ 
+        if (this.#running && newFPS != -1) {
+            this.#targetFps = newFPS;
+
             this.#interval = setInterval(() => {
                 this.#Update();
-            }, 1000/this.#targetFps);
+            }, 1000 / this.#targetFps);
+        }
+        else {
+            console.log("engine paused!");
         }
     }
 
@@ -133,7 +154,7 @@ window.Engine = class Engine{
 
     static Start(canvas_id){
         // cant start the engine twice
-        if(this.#running) return;
+        if (this.#running) return;
 
         this.#running = true;
 
@@ -144,16 +165,16 @@ window.Engine = class Engine{
         // Set canvas size
         if(this.fullscreen){
             this.#memorySize = this.WindowiSze
-            this.WindowSize.x = window.innerWidth;
-            this.WindowSize.y = window.innerHeight;
+            this.DisplaySize.x = window.innerWidth;
+            this.DisplaySize.y = window.innerHeight;
             
             this.#canvas.width = this.WindowSize.x;
             this.#canvas.height = this.WindowSize.y;
         }
-        else{
-            this.WindowSize = this.#memorySize;
-            this.#canvas.width = this.WindowSize.x;
-            this.#canvas.height = this.WindowSize.y;
+        else {
+            if(this.#memorySize != null) this.DisplaySize = this.#memorySize;
+            this.#canvas.width = this.DisplaySize.x;
+            this.#canvas.height = this.DisplaySize.y;
         }
 
         // Call all start functions
