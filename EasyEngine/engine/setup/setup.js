@@ -1,71 +1,62 @@
 global_scale = 12;
+plr = null;
 window.addEventListener("engine-loaded", () => {
 
-    // Engine settings
+    // Engine setup
 
-    Engine.SetTargetFPS(9999); // no upperlimit basically
-
-    Engine.fullscreen = true;
+    Engine.DisplaySize = new Vector2(640, 360);
     Engine.Start("canvas");
+
+    Engine.SetTargetFPS(-1); // pauses engine
 
     // Scene building
 
     plr = new GameObject("player", "circle");
     plr.tag = "player";
     plr.transform.scale = new Vector2(75, 75);
-    plr.transform.position = new Vector2(Engine.WindowSize.x / 2, Engine.WindowSize.y / 2);
+    plr.transform.position = new Vector2(Engine.GameSize.x / 2, Engine.GameSize.y / 2);
     plr.renderer.color = new Color(255, 0, 0);
     plrM = new PhysicBody();
     plr.AddComponent(plrM);
     plrX = new PlayerMovement();
     plr.AddComponent(plrX);
 
-    for (let i = 0; i < 1200; i++) {
-        b = new GameObject("particle", "circle");
-        b.tag = "particle";
-        b.transform.scale = new Vector2(global_scale, global_scale);
-        b.transform.position = new Vector2(Engine.WindowSize.x / 2 + Math.round((Math.random() * 200) - 100), Engine.WindowSize.y / 2 + Math.round((Math.random() * 200) - 100));
-        b.renderer.color = new Color(60, 60, 200);
-        b.AddComponent(new PhysicBody());
-        //b.AddComponent(new RandomMovement());
-    }
-
     let boundsCol = new Color(65, 65, 65);
 
-    box = new GameObject();
+    box = new GameObject(`wall [${Engine.GameObjects.length + 1}]`);
     box.tag = "grounds";
     box.transform.scale = new Vector2(5000, 50);
-    box.transform.position = new Vector2(0, Engine.WindowSize.y);
+    box.transform.position = new Vector2(0, Engine.GameSize.y);
     box.renderer.color = boundsCol;
     phy = new PhysicBody();
     phy.solid = true;
     box.AddComponent(phy);
 
-    box = new GameObject();
-    box.tag = "grounds";
-    box.transform.scale = new Vector2(5000, 50);
-    box.transform.position = new Vector2(0, 0);
-    box.renderer.color = boundsCol;
+    box1 = new GameObject(`wall [${Engine.GameObjects.length + 1}]`);
+    box1.tag = "grounds";
+    box1.transform.scale = new Vector2(5000, 50);
+    box1.transform.position = new Vector2(0, 0);
+    box1.renderer.color = boundsCol;
     phy = new PhysicBody();
     phy.solid = true;
-    box.AddComponent(phy);
+    box1.AddComponent(phy);
 
-    box = new GameObject();
-    box.tag = "grounds";
-    box.transform.scale = new Vector2(50, 5000);
-    box.transform.position = new Vector2(0, 0);
-    box.renderer.color = boundsCol;
+    box2 = new GameObject(`wall [${Engine.GameObjects.length+1}]`);
+    box2.tag = "grounds";
+    box2.transform.scale = new Vector2(50, 5000);
+    box2.transform.position = new Vector2(0, 0);
+    box2.renderer.color = boundsCol;
     phy = new PhysicBody();
     phy.solid = true;
-    box.AddComponent(phy);
+    box2.AddComponent(phy);
 
-    box = new GameObject();
-    box.tag = "grounds";
-    box.transform.scale = new Vector2(50, 5000);
-    box.transform.position = new Vector2(Engine.WindowSize.x, 0);
-    box.renderer.color = boundsCol;
+    box3 = new GameObject(`wall [${Engine.GameObjects.length + 1}]`);
+    box3.tag = "grounds";
+    box3.transform.scale = new Vector2(50, 5000);
+    box3.transform.position = new Vector2(Engine.GameSize.x, 0);
+    box3.renderer.color = boundsCol;
     phy = new PhysicBody();
     phy.solid = true;
-    box.AddComponent(phy);
+    box3.AddComponent(phy);
 });
 
