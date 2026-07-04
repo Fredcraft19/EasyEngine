@@ -4,15 +4,18 @@ async function async_main(){
 
     // script directorys
     const scripts = [
-        'engine/matter/matter.min.js',
-        'engine/math.js',
-        'engine/components.js',
-        'engine/engine.js',
-        'engine/gameobject.js',
-        'engine/input.js',
+        'engine/matter/matter.min.js',      // physics engine
+        'engine/math.js',                   // base mathmatical classes
+        'engine/components.js',             // pre-made components
+        'engine/engine.js',                 // engine logic
+        'engine/gameobject.js',             // game object class
+        'engine/input.js',                  // input manager
+        'engine/cc-loader.js',              // loads all custom components
 
-        // Just sends 'engine-loaded' event out
-        'engine/event.js'
+        'engine/setup/setup.js'  ,           // Project Setup (creates all gameobjects with components)
+
+        'engine/event.js'                   // starts the 'engine and loads everything kinda'
+
     ];
 
     // load the scripts
