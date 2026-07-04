@@ -1,0 +1,154 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: rgb(100, 100, 100);
+    cursor: default;
+}
+
+canvas {
+    display: flex;
+    border: 5px solid #000;
+    border-radius: 10px;
+    background: rgb(255, 255, 255);
+}
+
+.tiny {
+    font-size: 1px;
+    color: rgb(100, 100, 100);
+    display: block;
+}
+
+button {
+    background: rgb(181, 181, 181);
+    font-size: 18px;
+    border-radius: 10px;
+    transition: 0.2s;
+    font-family: 'Lucida Sans';
+}
+
+    button:hover {
+        transform: scale(0.95);
+        font-family: 'Lucida Sans';
+    }
+p {
+    font-size: 18px;
+    color: black;
+    font-family: 'Lucida Sans';
+}
+
+h1 {
+    padding: 5px 5px;
+    font-size: 25px;
+    margin: 0px;
+    font-family: 'Lucida Sans';
+}
+.small-text{
+    font-size: 14px;
+}
+.medium-text{
+    font-size: 16px;
+}
+
+.main {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.object {
+    background: rgb(80, 80, 80);
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border: solid;
+    margin: 5px;
+    transition: 0.2s;
+}
+
+.object:hover{
+    transform: scale(0.95);
+}
+
+.object-text {
+    margin: 0px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    padding-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.center-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 0px 15px;
+}
+.game-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 0px 5px;
+    border: solid;
+    border-radius: 25px;
+    border-width: 5px;
+}
+.gameview {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 5px 0px;
+}
+.asset-area {
+    height: 200px;
+    flex-shrink: 0;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: solid;
+    border-width: 5px;
+    margin-bottom: 5px;
+}
+
+.inspector, .hierarchy {
+    width: 250px;
+    padding: 10px 20px;
+    flex-shrink: 0;
+    border-radius: 25px;
+    border: solid;
+    border-width: 5px;
+    flex-direction: row;
+    overflow-y: auto;
+}
+
+    .inspector::-webkit-scrollbar,
+    .hierarchy::-webkit-scrollbar {
+        width: 16px;
+    }
+
+    .inspector::-webkit-scrollbar-track,
+    .hierarchy::-webkit-scrollbar-track {
+        background-clip: padding-box;
+    }
+
+    .inspector::-webkit-scrollbar-thumb,
+    .hierarchy::-webkit-scrollbar-thumb {
+        background: rgb(40, 40, 40);
+        background-clip: padding-box;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-right: 5px solid transparent;
+        border-radius: 16px;
+    }
+        .inspector::-webkit-scrollbar-thumb:hover,
+        .hierarchy::-webkit-scrollbar-thumb:hover {
+            background: rgb(60, 60, 60);
+
+            background-clip: padding-box;
+            border-top: 9px solid transparent;
+            border-bottom: 9px solid transparent;
+            border-right: 5px solid transparent;
+            border-radius: 8px;
+        }
