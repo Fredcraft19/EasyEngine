@@ -10,6 +10,7 @@ window.Engine = class Engine{
 
     static #gameobjects = [];
     static gameobjectCount = 0;
+    static latestID = 1;
 
     static #oldTime = Date.now();
 
@@ -45,7 +46,7 @@ window.Engine = class Engine{
 
         this.#gameobjects.forEach(shape => {
             // if there is no renderer. dont render. duh
-            if(shape.renderer != null && shape.renderer.display){
+            if (shape.renderer != null && shape.renderer.display) {
                 this.#draw.save();
                 // for every shape in shapes[] list, render it.
 
@@ -119,13 +120,15 @@ window.Engine = class Engine{
         this.#updates.push(method);
     }
 
-    static PushGameObject(shape){
-        this.gameobjectCount+=1;
-        this.#gameobjects.push(shape);
+    static PushGameObject(obj){
+        this.gameobjectCount += 1;
+        this.latestID += 1;
+        obj.id = this.latestID;
+        this.#gameobjects.push(obj);
     }
-    static PopGameObject(shape){
+    static PopGameObject(obj){
         this.gameobjectCount-=1;
-        this.#gameobjects.pop(shape);
+        this.#gameobjects.pop(obj);
     }
 
     static Start(canvas_id){
