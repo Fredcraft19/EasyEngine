@@ -12,9 +12,8 @@ To get just the engine's source files, install the latest relase.
 * Physics with matter.js
 * Ability to view+see FPS
 * Fullscreen or Set Canvas size
-* Custom Scripting logic (just in code.js for now, no custom components yet)
-## Planned Features
 * Custom Components
+## Planned Features
 * Maybe an in-browser editor
 * Ability to build your project*
 
