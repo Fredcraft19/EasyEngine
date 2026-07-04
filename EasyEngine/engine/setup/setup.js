@@ -7,7 +7,7 @@ window.addEventListener("engine-loaded", () => {
     Engine.DisplaySize = new Vector2(640, 360);
     Engine.Start("canvas");
 
-    Engine.SetTargetFPS(-1); // pauses engine
+    Engine.SetTargetFPS(1); // pauses engine
 
     // Scene building
 
@@ -58,5 +58,7 @@ window.addEventListener("engine-loaded", () => {
     phy = new PhysicBody();
     phy.solid = true;
     box3.AddComponent(phy);
+
+    Engine.SetTargetFPS(-1); // pauses engine
 });
 
