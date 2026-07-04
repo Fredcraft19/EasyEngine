@@ -6,12 +6,17 @@ window.GameObject = class GameObject{
     // custom/optional conponents such as rigidbody
     components = [];
 
+    id = 0; // DO NOT CHANGE THIS ID (this is for the engine to do)
+
     // Add Layers later?
 
     constructor(name = "GameObject ["+ (Engine.gameobjectCount+1) + "]", shape = "rect"){
-        this.renderer = new window.Components.Renderer(window.Color.Red, shape);
-        this.transform = new window.Components.Transform();
+        this.renderer = new window.Renderer(window.Color.Red, shape);
+        this.transform = new window.Transform();
+        this.transform.scale = new Vector2(20, 20);
         Engine.PushGameObject(this);
+
+        this.name = name;
 
         this.renderer.gameObject = this;
         this.transform.gameObject = this;
@@ -21,6 +26,7 @@ window.GameObject = class GameObject{
     }
     AddComponent(component){
         this.components.push(component);
+        component.gameObject = this;
         if(typeof component.Start === "function"){
             if(component.name === "PhysicBody"){
                 component.Start(this.transform, this.renderer.type);
@@ -41,12 +47,14 @@ window.GameObject = class GameObject{
         else if(name == "Transform"){
             return this.transform;
         }
-        else{
+        else {
+            let output = null
             this.components.forEach( comp => {
                 if(comp.name === name){
-                    return comp;
+                    output = comp;
                 }
             });
+            if(output != null) return output;
         }
         console.log("failed to find compoennt of name: '" + name + "'.");
     }
@@ -65,5 +73,15 @@ window.GameObject = class GameObject{
             });
         }
         return false;
+    }
+    Destroy() {
+        name = "deleted gameobject name";
+        tag = "deleted gameobject tag";
+        id = -1; // deleted id meaning
+        renderer = null;
+        transform = null;
+        components = [];
+
+        Engine.PopGameObject(this);
     }
 }
