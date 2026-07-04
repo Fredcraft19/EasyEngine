@@ -59,6 +59,7 @@ window.addEventListener("engine-loaded", () => {
     phy.solid = true;
     box3.AddComponent(phy);
 
+    Engine.Update();
     Engine.SetTargetFPS(-1); // pauses engine
 });
 
