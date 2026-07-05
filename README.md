@@ -4,20 +4,20 @@ A WIP (Work In Progress), Basic, 2D Game Engine written in JavaScript for the Ca
 The `engine/` folder contains all the core EasyEngine source files — this is
 the actual engine.
 
-Everything else in the repo root (`code.js`, `style.css`, `example.html`, etc.)
-is just a working example showing how to use the engine, not part of it.
+Everything in EasyEngine folder is the Editor with an example project. When the editor is 'ready for release'* then there will be the editor, without any example project, in the releases tab of the repository.
+* by 'ready for release', that doesnt mean high quality. it just means im happy with it and that its most likely fully functional.
 
 To get just the engine's source files, install the latest relase.
 ## Features
 * Physics with matter.js
 * Ability to view+see FPS
-* Fullscreen or Set Canvas size
-* Custom Components
+* WIP Editor
+* Inspector page in Editor to change variables during project runtime
+* Custom Components (Working but WIP for editor)
 ## Planned Features
-* Maybe an in-browser editor
-* Ability to build your project*
-
-*Without the in-browser editor files in the way. It should just be an easeir way to share the build game. (Don't know how im gonna do it)
+* Ability to build your project
+* In-Editor Code Editor
+* More Editor Features (maybe..)
 
 ## Physics
 EasyEngine uses 'Matter.js' for its physics.
