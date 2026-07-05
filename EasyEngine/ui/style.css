@@ -184,13 +184,10 @@ input {
     border: solid black 2px;
     box-sizing: border-box;
     overflow: hidden;
-    transition: 0.2s;
     margin: 5px;
 }
 
-    .inspector-component:hover {
-        transform: scale(1.05);
-    }
+
 
 .inspector-component2 {
     padding: 10px;
@@ -213,12 +210,8 @@ input {
     box-sizing: border-box;
     border: 1px solid #333;
     border-radius: 4px;
-    transition: 0.2s;
 }
 
-    .inspector-input:hover {
-        transform: scale(0.95);
-    }
 
 
 .inspector-label {
@@ -239,9 +232,4 @@ input {
     height: 20px;
     border-radius: 3px;
     object-fit: contain;
-    transition: 0.2s;
 }
-
-    .mini-icon:hover {
-        transform: scale(1.05);
-    }
