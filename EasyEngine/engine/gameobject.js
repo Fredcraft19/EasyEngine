@@ -46,6 +46,13 @@ window.GameObject = class GameObject{
             Engine.AddUpdate(component.Update.bind(component));
         }
     }
+    RemoveComponent(component) {
+        for (let i = 0; i < this.components.length; i++) {
+            if (this.components[i] == component) {
+                this.components.splice(i);
+            }
+        }
+    }
     GetComponent(name){
         if(name == "Renderer"){
             return this.renderer;
