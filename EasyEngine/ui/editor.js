@@ -17,10 +17,18 @@ let go_count = -1;
 // Component Inspector Class
 class Inspector_Component {
     name = "";
-    fields = {};
+    fields = {}; // full of inspector-field's
     ref = null; // & -> gameobject's component reference;.
     constructor(_name) {
         this.name = _name;
+    }
+}
+class Inspector_Field {
+    value = null;
+    ref = null;
+    constructor(value, ref) {
+        this.value = value;
+        this.ref = ref;
     }
 }
 
@@ -89,7 +97,6 @@ window.addEventListener('engine-loaded', function () {
             }
         }
         else {
-            console.log("input not for me..");
             return;
         }
         UpdateHierarchy();
@@ -97,14 +104,22 @@ window.addEventListener('engine-loaded', function () {
     inspector_base.addEventListener('click', (e) => {
         if (e.target.id == "go-enabled") {
             target.enabled = e.target.value;
-            console.log("set go's enabled!");
+        }
+    });
+
+    inspector.addEventListener('click', (e) => {
+        if (e.target.id) {
+            console.log(e.target.id); 
+            if (e.target.id.includes("del")) {
+                console.log("deleting component: " + inspector_memory[e.target.id.split("-")[1]].reference.name);
+                inspector_memory[e.target.id.split("-")[1]].reference.gameObject.RemoveComponent(inspector_memory[e.target.id.split("-")[1]].reference);
+            }
         }
     });
 
     // input field edited in inspector
     // MOST CONFUSING METHOD OF MY LIFEEEE
     inspector.addEventListener('input', (e) => {
-        console.log("Typing in: '" + e.target.id + "'.");
         let i_c = e.target.id.split('-')[0];
         let i_v = e.target.id.split('-')[1];
         let n_v = e.target.value;
@@ -144,9 +159,6 @@ window.addEventListener('engine-loaded', function () {
             if (typeof o_v === "boolean") n_v = e.target.checked;
 
             if (typeof o_v === typeof n_v) {
-                console.log("same type. setting!");
-                console.log(o_v + " >> " + n_v);
-
                 target_object[target_key] = n_v;
             }
             else {
@@ -179,11 +191,18 @@ window.addEventListener('engine-loaded', function () {
             go_count = Engine.GameObjects.length;
         }
 
+        let activeEl = document.activeElement;
+        let userIsEditing = activeEl && inspector.contains(activeEl);
+
+        if (!userIsEditing) {
+            UpdateInspector();
+        }
         if (ui_id != selected_id) {
             UpdateInspector();
         }
+        
 
-    }, 100);
+    }, 10000);
 
 });
 
@@ -216,7 +235,7 @@ function UpdateInspector() {
         
         inspector_base.style.display = "none";
     }
-
+    i_count = 0;
     
 
     target = null;
@@ -228,7 +247,6 @@ function UpdateInspector() {
     });
 
     if (target == null) {
-        console.error(`Target not found of id '${ui_id}'`);
         return;
     }
 
@@ -238,7 +256,8 @@ function UpdateInspector() {
 
     // go found. get compoentns -> display components!
     inspector_base.style.display = "block";
-
+    i_count = 0;
+    console.log(i_count+": -----------------------------------");
     // transform
     let pparent = CreateComponentHeader(target.transform);
     let variableEntries = Object.entries(target.transform);
@@ -263,12 +282,9 @@ function UpdateInspector() {
             let field = CreateComponentField(key, value);
             if (field != null) pparent.appendChild(field); 
         });
-        
-
     });   
 }
 function CreateComponentHeader(component) {
-
     i_count++;
     inspector_memory[i_count] = new Inspector_Component();
     inspector_memory[i_count].name = i_count;
@@ -287,8 +303,8 @@ function CreateComponentHeader(component) {
 
 
     let img = document.createElement('img');
-    if (i_count == 1) img.src = "ui/components/transform.png";
-    else if (i_count == 2) img.src = "ui/components/renderer.png";
+    if (component.name == "Transform") img.src = "ui/components/transform.png";
+    else if (component.name == "Renderer") img.src = "ui/components/renderer.png";
     else img.src = "ui/components/custom.png";
     img.className = "mini-icon";
 
@@ -319,7 +335,6 @@ function CreateComponentField(name, value) {
     }
     try {
         if (name == "name" || name.split('_')[0] == "HIDDEN") {
-            console.log("field uses hidden tag. Not showing!")
             return null;
         }
     }
@@ -335,7 +350,6 @@ function CreateComponentField(name, value) {
 
         if (value instanceof Vector2 || value instanceof Color) { // custom value
             if (value instanceof Vector2) { // vector2 (2 input fields)
-                console.log("VECTOR2 NAME :" + name); 
                 let fLabel = document.createElement('p');
                 fLabel.className = "inspector-label";
                 fLabel.innerText = name;
@@ -410,11 +424,5 @@ function CreateComponentField(name, value) {
         }
         
         return field;
-
-        // FOR EACH DONE
-
-
-    }
-    else {
     }
 }
