@@ -49,7 +49,13 @@ window.GameObject = class GameObject{
     RemoveComponent(component) {
         for (let i = 0; i < this.components.length; i++) {
             if (this.components[i] == component) {
-                this.components.splice(i);
+
+                if(typeof component.Update == "function") Engine.PopUpdate(component.Update);
+                if (typeof component.OnDelete == "function") component.OnDelete();
+
+                this.components.splice(i, 1);
+                console.warn(`Successfully deleted ${component.name} from GameObject backend!`);
+                break;
             }
         }
     }
