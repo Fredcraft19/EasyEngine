@@ -1,4 +1,6 @@
 // if you see 'go' in a variable name, it probably means GameObject
+// Editor UI settings
+let sf_value = 7;
 
 // Engine Performance Information
 let fps = document.getElementById("fps_count");
@@ -24,13 +26,18 @@ class Inspector_Component {
     }
 }
 class Inspector_Field {
+    name = ""; // variable name
     value = null;
-    ref = null;
-    constructor(value, ref) {
+    parent_ref = null;      // reference to value's parent. (bypass no references for primitives)
+    text_id = "";
+    constructor(name, value, ref, text_id) {
         this.value = value;
-        this.ref = ref;
+        this.parent_ref = ref;
+        this.name = name;
+        this.text_id = text_id;
     }
 }
+let inspector_fields = [];  // contains the class above
 
 let inspector = document.getElementById("inspecter-components"); // 'An Inspector Calls' reference& ?
 let inspector_base = document.getElementById("inspector-base");
@@ -69,12 +76,7 @@ window.addEventListener('engine-loaded', function () {
         Engine.deltaTime = 0;
     });
 
-    // Dis-select gameobject:
-    hierarchy.addEventListener('click', function () {
-        //console.log("SELECTED ID = -1;");
-        //if (go_target != null) { selected_id = -1; go_target = null; UpdateInspector(); }
-        
-    });
+    // MAYBE IN THE FUTURE MAKE IT SO YOU CAN DISELECT A GAMEOBJECT FOR THE INSPECTOR?!
 
     // input field in base inspector (above components areas)
     inspector_base.addEventListener('input', (e) => {
@@ -103,16 +105,15 @@ window.addEventListener('engine-loaded', function () {
     });
     inspector_base.addEventListener('click', (e) => {
         if (e.target.id == "go-enabled") {
-            target.enabled = e.target.value;
+            target.enabled = e.target.checked;
         }
     });
 
     inspector.addEventListener('click', (e) => {
         if (e.target.id) {
-            console.log(e.target.id); 
             if (e.target.id.includes("del")) {
-                console.log("deleting component: " + inspector_memory[e.target.id.split("-")[1]].reference.name);
                 inspector_memory[e.target.id.split("-")[1]].reference.gameObject.RemoveComponent(inspector_memory[e.target.id.split("-")[1]].reference);
+                UpdateInspector();
             }
         }
     });
@@ -191,18 +192,13 @@ window.addEventListener('engine-loaded', function () {
             go_count = Engine.GameObjects.length;
         }
 
-        let activeEl = document.activeElement;
-        let userIsEditing = activeEl && inspector.contains(activeEl);
-
-        if (!userIsEditing) {
-            UpdateInspector();
-        }
         if (ui_id != selected_id) {
             UpdateInspector();
         }
-        
 
-    }, 1000);
+        UpdateInspectorValues();
+
+    }, 100);
 
 });
 
@@ -217,16 +213,23 @@ function UpdateHierarchy() {
         p.innerText = obj.name;
         p.id = obj.id;
         div.appendChild(p);
+        let del = document.createElement('button');
+        del.className = "no-margin-far-right";
+        del.innerText = "delete";
+        del.id = obj.id;
+        div.appendChild(del);
         hierarchy.appendChild(div);
         div.addEventListener('click', ObjectClicked);
     });
 }
+
 function ObjectClicked(e) {
     selected_id = e.currentTarget.id;
 
 }
 
 function UpdateInspector() {
+    inspector_fields = [];
     inspector_memory = {};
     delete_btns = {};
     ui_id = selected_id;
@@ -257,7 +260,6 @@ function UpdateInspector() {
     // go found. get compoentns -> display components!
     inspector_base.style.display = "block";
     i_count = 0;
-    console.log(i_count+": -----------------------------------");
     // transform
     let pparent = CreateComponentHeader(target.transform);
     let variableEntries = Object.entries(target.transform);
@@ -279,7 +281,7 @@ function UpdateInspector() {
         let pparent = CreateComponentHeader(component);
         let variableEntries = Object.entries(component);
         variableEntries.forEach(([key, value]) => {
-            let field = CreateComponentField(key, value);
+            let field = CreateComponentField(key, value, component);
             if (field != null) pparent.appendChild(field); 
         });
     });   
@@ -289,7 +291,6 @@ function CreateComponentHeader(component) {
     inspector_memory[i_count] = new Inspector_Component();
     inspector_memory[i_count].name = i_count;
     inspector_memory[i_count].reference = component; // give the i-memory a reference to the gameobject's component its showing
-    console.log(`created new i-component of key: ${i_count}`)
     current_component = i_count;
 
     let parent = document.createElement('div');
@@ -329,7 +330,7 @@ function CreateComponentHeader(component) {
     return pparent;
 }
 
-function CreateComponentField(name, value) {
+function CreateComponentField(name, value, _component_reference) {
     if (value === null) {
         return null;
     }
@@ -338,15 +339,15 @@ function CreateComponentField(name, value) {
             return null;
         }
     }
-    catch (e) { console.log(e); }
+    catch (e) { console.error(e); }
     if (typeof value == "number" || typeof value == "string" || typeof value == "boolean" || value instanceof Vector2 || value instanceof Color) {
         // add to i-component (i = inspector)
 
-        console.log(`Adding Variable to i-component:\nI-Component: ${current_component}\nVariable: ${name}:${value}`);
         inspector_memory[current_component].fields[name] = value;
 
         let field = document.createElement('div');
         field.className = "inspector-field";
+        
 
         if (value instanceof Vector2 || value instanceof Color) { // custom value
             if (value instanceof Vector2) { // vector2 (2 input fields)
@@ -356,6 +357,7 @@ function CreateComponentField(name, value) {
                 let fInput = document.createElement('input');
                 fInput.className = "inspector-input";
                 fInput.id = current_component + "-" + name + ".x";
+                inspector_fields.push(new Inspector_Field("x", name, value, current_component + "-" + name + ".x"));
                 fInput.value = value["x"];
 
                 field.appendChild(fLabel);
@@ -364,6 +366,7 @@ function CreateComponentField(name, value) {
                 let ffInput = document.createElement('input');
                 ffInput.className = "inspector-input";
                 ffInput.id = current_component + "-" + name + ".y";
+                inspector_fields.push(new Inspector_Field("y", name, value, current_component + "-" + name + ".y"));
                 ffInput.value = value["y"];
 
                 field.appendChild(fLabel);
@@ -378,6 +381,7 @@ function CreateComponentField(name, value) {
                 let fInput = document.createElement('input');
                 fInput.className = "inspector-input";
                 fInput.id = current_component + "-" + name + ".r";
+                inspector_fields.push(new Inspector_Field("r", name, value, current_component + "-" + name + ".r"));
                 fInput.value = value["r"];
 
                 field.appendChild(fLabel);
@@ -386,16 +390,19 @@ function CreateComponentField(name, value) {
                 let ffInput = document.createElement('input');
                 ffInput.className = "inspector-input";
                 ffInput.id = current_component + "-" + name + ".g";
+                inspector_fields.push(new Inspector_Field("g", name, value, current_component + "-" + name + ".g"));
                 ffInput.value = value["g"];
 
                 let fffInput = document.createElement('input');
                 fffInput.className = "inspector-input";
                 fffInput.id = current_component + "-" + name + ".b";
+                inspector_fields.push(new Inspector_Field("b", name, value, current_component + "-" + name + ".b"));
                 fffInput.value = value["b"];
 
                 let ffffInput = document.createElement('input');
                 ffffInput.className = "inspector-input";
                 ffffInput.id = current_component + "-" + name + ".a";
+                inspector_fields.push(new Inspector_Field("a", name, value, current_component + "-" + name + ".a"));
                 ffffInput.value = value["a"];
 
                 
@@ -411,6 +418,12 @@ function CreateComponentField(name, value) {
             let fInput = document.createElement('input');
             fInput.className = "inspector-input";
             fInput.id = current_component + "-" + name;
+
+            inspector_fields.push(new Inspector_Field(name,
+                 value,
+                  _component_reference, 
+                  current_component + "-" + name));
+
             fInput.value = value;
             if (typeof value == "boolean") {
                 fInput.type = "checkbox";
@@ -423,4 +436,28 @@ function CreateComponentField(name, value) {
         
         return field;
     }
+}
+
+function UpdateInspectorValues(){
+    let text_input = null;
+    inspector_fields.forEach(field => {
+        try{
+            text_input = document.getElementById(field.text_id);
+            if(document.activeElement != text_input){
+                field.value = field.parent_ref[field.name];
+                if(typeof field.value == "number"){
+                    text_input.value = Number(field.value.toPrecision(sf_value));
+                }
+                else{
+                    text_input.value = field.value;
+                }
+                
+            }
+            
+        }
+        catch(e){       // Console Clogger
+        }
+
+        text_input = null; // reset and to make sure in any bugs, the values aren't overwritten/messed up
+    });
 }
