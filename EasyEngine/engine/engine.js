@@ -96,12 +96,14 @@ window.Engine = class Engine{
         Matter.Engine.update(window.physicsEngine, this.deltaTime);
     }
 
+
     // Updates engine by:
     // Rendering everything,
     // Running all Update Methods on scripts.
 
     static Update(){
         // Every Engine update:
+        
         for(let x = 0; x < this.#updates.length; x++){
             this.#updates[x]();
         }
@@ -141,7 +143,9 @@ window.Engine = class Engine{
         this.#updates.push(method);
     }
     static PopUpdate(method) {
+        console.log("1: contains requested delete? " + this.#updates.includes(method) == true);
         this.#updates.splice(this.#updates.indexOf(method), 1);
+        console.log("2: contains requested delete? " + this.#updates.includes(method) == true);
     }
 
     static PushGameObject(obj){
