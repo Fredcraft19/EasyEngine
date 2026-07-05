@@ -6,6 +6,10 @@ window.GameObject = class GameObject{
     // custom/optional conponents such as rigidbody
     components = [];
 
+    enabled = true;
+    #enabled = true;
+    #display = true;
+
     id = 0; // DO NOT CHANGE THIS ID (this is for the engine to do)
 
     // Add Layers later?
@@ -20,6 +24,8 @@ window.GameObject = class GameObject{
 
         this.renderer.gameObject = this;
         this.transform.gameObject = this;
+
+        Engine.AddUpdate(this.EnabledCheck.bind(this));
     }
     EngineReference(){
         return Engine;
@@ -83,5 +89,36 @@ window.GameObject = class GameObject{
         components = [];
 
         Engine.PopGameObject(this);
+    }
+    EnabledCheck() {
+        if (this.enabled != this.#enabled && !this.enabled) {
+            this.#enabled = this.enabled;
+            if (this.#display != this.renderer.display) {
+                this.#display = this.renderer.display;
+            }
+            this.components.forEach(c => {
+                if (typeof c.OnDisabled == "function") {
+                    c.OnDisabled();
+                }
+                if (typeof c.Update == "function") {
+                    console.log("deleting methods for engnie");
+                    Engine.PopUpdate(c.Update);
+                }
+            });
+            this.renderer.display = false;
+        }
+        else if (this.enabled != this.#enabled && this.enabled) {
+            this.#enabled = this.enabled;
+            this.renderer.display = this.#display;
+            this.components.forEach(c => {
+                if (typeof c.OnEnabled == "function") {
+                    c.OnEnabled();
+                }
+                if (typeof c.Update == "function") {
+                    console.log("adding methods for engnie");
+                    Engine.AddUpdate(c.Update);
+                }
+            });
+        }
     }
 }
