@@ -4,6 +4,7 @@ body, html {
     overflow: hidden;
     background: rgb(100, 100, 100);
     cursor: default;
+    zoom: 99%;
 }
 
 canvas {
@@ -31,6 +32,7 @@ button {
         transform: scale(0.95);
         font-family: 'Lucida Sans';
     }
+
 p {
     font-size: 15px;
     color: black;
@@ -44,25 +46,32 @@ h1 {
     font-family: 'Lucida Sans';
 }
 
-.small-text{
+.small-text {
     font-size: 14px;
 }
-.medium-text{
+
+.medium-text {
     font-size: 16px;
 }
-.no-margin{
-    margin:2px;
+
+.no-margin {
+    margin: 2px;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-input{
+input {
     background-color: rgb(181, 181, 181);
     border-radius: 6px;
 }
-input:checked {
-    background-color: green;
-}
+
+    input:checked {
+        background-color: green;
+    }
 
 .main {
+    margin: 9px;
     display: flex;
     width: 100vw;
     height: 100vh;
@@ -77,9 +86,9 @@ input:checked {
     transition: 0.2s;
 }
 
-.object:hover{
-    transform: scale(0.95);
-}
+    .object:hover {
+        transform: scale(0.95);
+    }
 
 .object-text {
     margin: 0px;
@@ -98,6 +107,7 @@ input:checked {
     height: 100vh;
     padding: 0px 15px;
 }
+
 .game-controls {
     display: flex;
     gap: 10px;
@@ -107,6 +117,7 @@ input:checked {
     border-radius: 25px;
     border-width: 5px;
 }
+
 .gameview {
     flex-grow: 1;
     display: flex;
@@ -114,6 +125,7 @@ input:checked {
     align-items: flex-start;
     padding: 5px 0px;
 }
+
 .asset-area {
     height: 200px;
     flex-shrink: 0;
@@ -148,17 +160,16 @@ input:checked {
     .inspector::-webkit-scrollbar-thumb,
     .hierarchy::-webkit-scrollbar-thumb {
         background: rgb(40, 40, 40);
-
         background-clip: padding-box;
         border-top: 8px solid transparent;
         border-bottom: 8px solid transparent;
         border-right: 5px solid transparent;
         border-radius: 16px;
     }
+
         .inspector::-webkit-scrollbar-thumb:hover,
         .hierarchy::-webkit-scrollbar-thumb:hover {
             background: rgb(60, 60, 60);
-
             background-clip: padding-box;
             border-top: 9px solid transparent;
             border-bottom: 9px solid transparent;
@@ -171,10 +182,15 @@ input:checked {
     background-color: rgb(160, 160, 160);
     border-radius: 15px;
     border: solid black 2px;
-
     box-sizing: border-box;
     overflow: hidden;
+    transition: 0.2s;
+    margin: 5px;
 }
+
+    .inspector-component:hover {
+        transform: scale(1.05);
+    }
 
 .inspector-component2 {
     padding: 10px;
@@ -185,7 +201,7 @@ input:checked {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 0px; 
+    padding: 5px 0px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -199,16 +215,17 @@ input:checked {
     border-radius: 4px;
     transition: 0.2s;
 }
-    .inspector-input:hover{
+
+    .inspector-input:hover {
         transform: scale(0.95);
     }
 
 
-    .inspector-label {
-        margin-top: 0px;
-        margin-bottom: 0px;
-        font-size: 12px;
-    }
+.inspector-label {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 12px;
+}
 
 .component-header {
     display: flex;
@@ -224,6 +241,7 @@ input:checked {
     object-fit: contain;
     transition: 0.2s;
 }
-.mini-icon:hover{
-    transform: scale(1.05);
-}
+
+    .mini-icon:hover {
+        transform: scale(1.05);
+    }
