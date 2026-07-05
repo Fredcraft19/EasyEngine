@@ -10,7 +10,11 @@ let fps = document.getElementById("fps_count");
 let play = document.getElementById("play");
 let pause = document.getElementById("pause");
 
+// I/O control
+let load = document.getElementById('load');
+
 // Hierarchy Varibles
+let new_btn = document.getElementById('new-go');
 let hierarchy = document.getElementById("hierarchy");
 let go_count = -1;
 
@@ -54,15 +58,36 @@ current_component = "";
 delete_btns = {};
 
 
+
 // create component inspector map
 
 
 window.addEventListener('engine-loaded', function () {
     console.log("Running editor.js");
+    if (!("showDirectoryPicker" in window)) {
+        alert("Your browser doesn't support the File System Access API.\n\nEasyEngine will NOT work for custom components because of this.\n\n(u cant use this boohoo.)");
+    }
 
     document.getElementById("tt").innerText = "EasyEngine Editor " + Engine.version;
     document.getElementById("tv").innerText = "EasyEngine " + Engine.version;
+
+    // Component Memory
+    let components = {
+        "Transform":Transform,
+        "Renderer":Renderer,
+        "PhysicBody":PhysicBody,
+        "Trigger":Trigger,
+        "PlayerMovement":PlayerMovement
+    };
+
     // Methods
+
+    // I/O Control
+    load.addEventListener('click', async function(){
+        alert("When prompted, please choose parent folder of editor.html! And allow for file read/write!");
+        projectFolder = await window.showDirectoryPicker();
+        console.log(projectFolder);
+    });
 
     // Play
     play.addEventListener('click', function () {
@@ -111,10 +136,26 @@ window.addEventListener('engine-loaded', function () {
 
     inspector.addEventListener('click', (e) => {
         if (e.target.id) {
-            if (e.target.id.includes("del")) {
+            if (e.target.id.includes("del")) {  // delete component
                 inspector_memory[e.target.id.split("-")[1]].reference.gameObject.RemoveComponent(inspector_memory[e.target.id.split("-")[1]].reference);
                 UpdateInspector();
             }
+            if(e.target.id == "new-comp"){  // new Component
+                component_name = prompt("Name of new component?");
+                if(component_name in components){   // add pre-existing component
+                    target.AddComponent(new components[component_name]());
+                    UpdateInspector();
+                }
+                else{       // make new component prompt
+                    alert(`Invalid Component Name. If this is not supposed to happen, Clicking the 'Load' button and selecting your project folder should work!`);
+                }
+            }
+        }
+    });
+
+    hierarchy.addEventListener('click', (e) => {
+        if(e.target.id == "new-go"){
+            new GameObject("Empty GameObject");
         }
     });
 
@@ -203,7 +244,8 @@ window.addEventListener('engine-loaded', function () {
 });
 
 function UpdateHierarchy() {
-    hierarchy.innerHTML = "<h1>Hierarchy</h1>";
+    hierarchy.innerHTML = "<h1>Hierarchy</h1><button id='new-go' class='no-margin-far-right'>New</button>";
+    new_btn = document.getElementById('new-go');
     Engine.GameObjects.forEach(obj => {
         let div = document.createElement('div');
         div.className = "object";
@@ -285,7 +327,21 @@ function UpdateInspector() {
             if (field != null) pparent.appendChild(field); 
         });
     });   
+
+    CreateAddComponentBTN();
 }
+
+function CreateAddComponentBTN(){
+    let div = document.createElement('div');
+    div.style = "display: flex; justify-content: center; align-items: center; margin-top: 15px;";
+    let btn = document.createElement('button');
+    btn.innerText = "New Component";
+    btn.id = "new-comp";
+    btn.className = "center";
+    div.appendChild(btn); 
+    inspector.appendChild(div); 
+}
+
 function CreateComponentHeader(component) {
     i_count++;
     inspector_memory[i_count] = new Inspector_Component();
