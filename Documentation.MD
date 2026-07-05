@@ -6,7 +6,7 @@ Coming Soon..
 ## Custom Components
 Template component looks like this:
 ```js
-window.COMPONENTNAME = class COMPONENTNAME extends Component {
+class COMPONENTNAME extends Component {
     name = "COMPONENTNAME";
 
     Start() {  // called once when object is added to gameobject
