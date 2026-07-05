@@ -9,7 +9,7 @@ class Component{
     _bound_update = null; // gameobject will manage this - auto set
 }
 
-window.Transform = class Transform extends Component{
+class Transform extends Component{
     name = "Transform";
     parent = null;
 
@@ -43,7 +43,7 @@ window.Transform = class Transform extends Component{
     }
 }
 
-window.Renderer = class Renderer extends Component{
+class Renderer extends Component{
     name = "Renderer";
     color = null;
 
@@ -67,7 +67,7 @@ window.Renderer = class Renderer extends Component{
 
 // OPTIONAL CONPOENENTS
 
-window.Trigger = class Trigger extends Component{
+class Trigger extends Component{
     name = "Trigger";
     type = "rect";
     transform = null;
@@ -215,7 +215,7 @@ const MatterEngine = window.physicsEngine;
 window.physicsEngine.world.gravity.y = 250000; // base gravity: 250000
 
 
-window.PhysicBody = class PhysicBody extends Component {
+class PhysicBody extends Component {
     name = "PhysicBody";
     transform = null;
     body = null;
