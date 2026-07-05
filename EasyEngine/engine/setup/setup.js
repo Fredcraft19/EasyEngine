@@ -5,14 +5,13 @@ window.addEventListener("engine-loaded", () => {
     // Engine setup
 
     Engine.DisplaySize = new Vector2(640, 360);
+    Engine.SetTargetFPS(100000);
     Engine.Start("canvas");
-
-    Engine.SetTargetFPS(1); // pauses engine
 
     // Scene building
 
     plr = new GameObject("player", "circle");
-    plr.tag = "player";
+    plr.tag = "player-tag";
     plr.transform.scale = new Vector2(75, 75);
     plr.transform.position = new Vector2(Engine.GameSize.x / 2, Engine.GameSize.y / 2);
     plr.renderer.color = new Color(255, 0, 0);
