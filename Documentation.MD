@@ -1,7 +1,21 @@
 # EasyEngine Documentation
 
 ## Editor
-How to use the editor
+Coming Soon..
 
 ## Custom Components
-How to make custom components
+Template component looks like this:
+```js
+window.COMPONENTNAME = class COMPONENTNAME extends Component {
+    name = "COMPONENTNAME";
+
+    Start() {  // called once when object is added to gameobject
+
+    }
+    Update() {  // called every frame unless gameobject parent is disabled
+
+    }
+}
+```
+
+More on this soon..
