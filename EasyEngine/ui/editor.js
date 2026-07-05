@@ -202,7 +202,7 @@ window.addEventListener('engine-loaded', function () {
         }
         
 
-    }, 10000);
+    }, 1000);
 
 });
 
@@ -398,9 +398,7 @@ function CreateComponentField(name, value) {
                 ffffInput.id = current_component + "-" + name + ".a";
                 ffffInput.value = value["a"];
 
-                field.appendChild(fLabel);
-
-                field.appendChild(fInput);
+                
                 field.appendChild(ffInput);
                 field.appendChild(fffInput);
                 field.appendChild(ffffInput);
