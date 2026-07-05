@@ -1,6 +1,6 @@
 // Main engine code
 window.Engine = class Engine{
-    static version = "pre2";
+    static version = "Alpha 0.1";
 
     /** @type {CanvasRenderingContext2D} */
     static #draw = null;
