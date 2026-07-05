@@ -32,7 +32,7 @@ button {
         font-family: 'Lucida Sans';
     }
 p {
-    font-size: 18px;
+    font-size: 15px;
     color: black;
     font-family: 'Lucida Sans';
 }
@@ -43,11 +43,23 @@ h1 {
     margin: 0px;
     font-family: 'Lucida Sans';
 }
+
 .small-text{
     font-size: 14px;
 }
 .medium-text{
     font-size: 16px;
+}
+.no-margin{
+    margin:2px;
+}
+
+input{
+    background-color: rgb(181, 181, 181);
+    border-radius: 6px;
+}
+input:checked {
+    background-color: green;
 }
 
 .main {
@@ -136,6 +148,7 @@ h1 {
     .inspector::-webkit-scrollbar-thumb,
     .hierarchy::-webkit-scrollbar-thumb {
         background: rgb(40, 40, 40);
+
         background-clip: padding-box;
         border-top: 8px solid transparent;
         border-bottom: 8px solid transparent;
@@ -152,3 +165,65 @@ h1 {
             border-right: 5px solid transparent;
             border-radius: 8px;
         }
+
+
+.inspector-component {
+    background-color: rgb(160, 160, 160);
+    border-radius: 15px;
+    border: solid black 2px;
+
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.inspector-component2 {
+    padding: 10px;
+}
+
+.inspector-field {
+    margin: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0px; 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.inspector-input {
+    height: 1.2rem;
+    width: 60%;
+    padding: 2px 6px;
+    box-sizing: border-box;
+    border: 1px solid #333;
+    border-radius: 4px;
+    transition: 0.2s;
+}
+    .inspector-input:hover{
+        transform: scale(0.95);
+    }
+
+
+    .inspector-label {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 12px;
+    }
+
+.component-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+}
+
+.mini-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    object-fit: contain;
+    transition: 0.2s;
+}
+.mini-icon:hover{
+    transform: scale(1.05);
+}
