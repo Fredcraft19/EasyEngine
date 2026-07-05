@@ -296,6 +296,10 @@ window.PhysicBody = class PhysicBody extends Component {
         return new Vector2(this.body.velocity.x, this.body.velocity.y);
     }
 
+    OnDelete() {
+        Matter.Composite.remove(MatterEngine.world, this.body);
+    }
+
     SetVelocity(newVelocity) {
         Matter.Body.setVelocity(this.body, {
             x: newVelocity.x,
