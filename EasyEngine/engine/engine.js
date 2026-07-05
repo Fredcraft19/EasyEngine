@@ -40,7 +40,6 @@ window.Engine = class Engine{
 
     // renders frame
     static #RenderFrame() {
-        console.log("drawcall");
         // Clear Last Frame
         this.#draw.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
 
@@ -123,7 +122,7 @@ window.Engine = class Engine{
             }, 1000 / this.#targetFps);
         }
         else {
-            console.log("engine paused!");
+            console.warn("engine paused!");
         }
     }
 
@@ -140,6 +139,9 @@ window.Engine = class Engine{
 
     static AddUpdate(method){
         this.#updates.push(method);
+    }
+    static PopUpdate(method) {
+        this.#updates.pop(method);
     }
 
     static PushGameObject(obj){
