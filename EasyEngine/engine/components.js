@@ -70,7 +70,7 @@ window.Trigger = class Trigger extends Component{
     name = "Trigger";
     type = "rect";
     transform = null;
-    trigger_size = null;
+    trigger_size = new Vector2(1, 1);
     match_transform = false;
     thickness = 0.1;
 
@@ -211,58 +211,99 @@ window.Trigger = class Trigger extends Component{
 
 const Matter = window.Matter;
 const MatterEngine = window.physicsEngine;
-window.physicsEngine.world.gravity.y = 250000; // was 250000
+window.physicsEngine.world.gravity.y = 250000; // base gravity: 250000
 
 
-window.PhysicBody = class PhysicBody extends Component{
+window.PhysicBody = class PhysicBody extends Component {
     name = "PhysicBody";
     transform = null;
     body = null;
+
+    position = new Vector2(0, 0);
+    scale = new Vector2(0, 0);
+    rotation = 0;
+
+    velocity = new Vector2(0, 0);
 
     mass = 5;
     friction = 10;
     solid = false;
     inertia = 0.5;
 
-    velocity = new Vector2(0, 0);
+    HIDDEN_lastSyncedX = 0;
+    HIDDEN_lastSyncedY = 0;
+    HIDDEN_lastSyncedRotation = 0;
+    HIDDEN_lastSyncedVx = 0;
+    HIDDEN_lastSyncedVy = 0;
 
-    Start(transform, type = "rect"){
+    Start(transform, type = "rect") {
         this.transform = transform;
 
-        if(type == "circle"){ 
-            this.body = Matter.Bodies.circle( transform.position.x, transform.position.y, transform.scale.x / 2);
-        }
-        else{ // Rectangle
+        if (type == "circle") {
+            this.body = Matter.Bodies.circle(transform.position.x, transform.position.y, transform.scale.x / 2);
+        } else { // if not circle. rectangle then.
             this.body = Matter.Bodies.rectangle(transform.position.x, transform.position.y, transform.scale.x, transform.scale.y);
         }
 
         Matter.Composite.add(MatterEngine.world, this.body);
-
         this.body.friction = this.friction;
         Matter.Body.setStatic(this.body, this.solid);
-        //Matter.Body.setInertia(this.body, this.inertia);
-        //Matter.Body.setMass(this.body, this.mass);
     }
 
-    Update(){
+    Update() {
         if (!this.body) return;
 
-        this.transform.position.x = this.body.position.x;
-        this.transform.position.y = this.body.position.y;
-        this.transform.rotation = this.body.angle * 180 / Math.PI;
+        Matter.Body.setStatic(this.body, this.solid);
+
+        let userMovedIt = this.position.x !== this.HIDDEN_lastSyncedX || this.position.y !== this.HIDDEN_lastSyncedY;
+        let userRotatedIt = this.rotation !== this.HIDDEN_lastSyncedRotation;
+        let userChangedVelocity = this.velocity.x !== this.HIDDEN_lastSyncedVx || this.velocity.y !== this.HIDDEN_lastSyncedVy;
+
+        if (userMovedIt) {
+            Matter.Body.setPosition(this.body, { x: this.position.x, y: this.position.y });
+        }
+        if (userRotatedIt) {
+            Matter.Body.setAngle(this.body, this.rotation * (Math.PI / 180));
+        }
+        if (userChangedVelocity) {
+            Matter.Body.setVelocity(this.body, { x: this.velocity.x, y: this.velocity.y });
+        }
+
+        this.position.x = this.body.position.x;
+        this.position.y = this.body.position.y;
+        this.rotation = this.body.angle * (180 / Math.PI);
+        this.velocity.x = this.body.velocity.x;
+        this.velocity.y = this.body.velocity.y;
+
+        if (this.transform) {
+            this.transform.position.x = this.position.x;
+            this.transform.position.y = this.position.y;
+            this.transform.rotation = this.rotation;
+        }
+
+        this.HIDDEN_lastSyncedX = this.position.x;
+        this.HIDDEN_lastSyncedY = this.position.y;
+        this.HIDDEN_lastSyncedRotation = this.rotation;
+        this.HIDDEN_lastSyncedVx = this.velocity.x;
+        this.HIDDEN_lastSyncedVy = this.velocity.y;
     }
 
-    AddForce(force){
-        Matter.Body.applyForce(this.body, this.body.position, {x: force.x, y: force.y});
+    AddForce(force) {
+        Matter.Body.applyForce(this.body, this.body.position, { x: force.x, y: force.y });
     }
 
-    GetVelocity(){
+    GetVelocity() {
         return new Vector2(this.body.velocity.x, this.body.velocity.y);
     }
-    SetVelocity(newVelocity){
+
+    SetVelocity(newVelocity) {
         Matter.Body.setVelocity(this.body, {
             x: newVelocity.x,
             y: newVelocity.y
         });
+        this.velocity.x = newVelocity.x;
+        this.velocity.y = newVelocity.y;
+        this.HIDDEN_lastSyncedVx = newVelocity.x;
+        this.HIDDEN_lastSyncedVy = newVelocity.y;
     }
 }
