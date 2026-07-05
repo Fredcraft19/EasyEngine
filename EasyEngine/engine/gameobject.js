@@ -53,7 +53,7 @@ window.GameObject = class GameObject{
         for (let i = 0; i < this.components.length; i++) {
             if (this.components[i] == component) {
 
-                if(typeof component.Update == "function") Engine.PopUpdate(component.Update);
+                if(typeof component.Update == "function") Engine.PopUpdate(component._bound_update);
                 if (typeof component.OnDelete == "function") component.OnDelete();
 
                 this.components.splice(i, 1);
