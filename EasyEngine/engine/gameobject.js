@@ -8,6 +8,7 @@ window.GameObject = class GameObject{
 
     enabled = true;
     #enabled = true;
+
     #display = true;
 
     id = 0; // DO NOT CHANGE THIS ID (this is for the engine to do)
@@ -43,7 +44,9 @@ window.GameObject = class GameObject{
             component.gameObject = this;
         }
         if(typeof component.Update === "function"){
-            Engine.AddUpdate(component.Update.bind(component));
+            let comp_update = component.Update.bind(component);
+            component._bound_update = comp_update;
+            Engine.AddUpdate(comp_update);
         }
     }
     RemoveComponent(component) {
@@ -104,34 +107,37 @@ window.GameObject = class GameObject{
         Engine.PopGameObject(this);
     }
     EnabledCheck() {
-        if (this.enabled != this.#enabled && !this.enabled) {
-            this.#enabled = this.enabled;
-            if (this.#display != this.renderer.display) {
+        
+        if (this.enabled != this.#enabled) {
+            this.#enabled = this.enabled; // for toggle memory
+            console.log("setup!");
+            // does renderer
+            if (!this.enabled) {
                 this.#display = this.renderer.display;
+                this.renderer.display = false;
+            } else {
+                this.renderer.display = this.#display;
             }
-            this.components.forEach(c => {
-                if (typeof c.OnDisabled == "function") {
-                    c.OnDisabled();
-                }
-                if (typeof c.Update == "function") {
-                    console.log("deleting methods for engnie");
-                    Engine.PopUpdate(c.Update);
-                }
-            });
-            this.renderer.display = false;
-        }
-        else if (this.enabled != this.#enabled && this.enabled) {
-            this.#enabled = this.enabled;
-            this.renderer.display = this.#display;
-            this.components.forEach(c => {
-                if (typeof c.OnEnabled == "function") {
-                    c.OnEnabled();
-                }
-                if (typeof c.Update == "function") {
-                    console.log("adding methods for engnie");
-                    Engine.AddUpdate(c.Update);
-                }
-            });
+            
+            // toggles components
+            try{
+                this.components.forEach(c => {
+                    if (typeof c.Update === "function" && c._bound_update) { 
+                        console.log(c.name + ": has Update! TRUE");
+                        if (!this.enabled) {
+                            if (typeof c.OnDisabled === "function") c.OnDisabled();   
+                            Engine.PopUpdate(c._bound_update);   
+                            console.log("asked to delete UpdateMethod!"); 
+                        } else {
+                            if (typeof c.OnEnabled === "function") c.OnEnabled();
+
+                            Engine.AddUpdate(c._bound_update);   
+                            console.log("asked to add back UpdateMethod!"); 
+                        }
+                    }
+                });
+            }
+            catch(e) {console.log(e);} 
         }
     }
 }
