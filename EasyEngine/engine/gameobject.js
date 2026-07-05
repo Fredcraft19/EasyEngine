@@ -1,4 +1,4 @@
-window.GameObject = class GameObject{
+class GameObject{
     name = "";
     tag = "default";
     transform = null;
@@ -16,8 +16,8 @@ window.GameObject = class GameObject{
     // Add Layers later?
 
     constructor(name = "GameObject ["+ (Engine.gameobjectCount+1) + "]", shape = "rect"){
-        this.renderer = new window.Renderer(window.Color.Red, shape);
-        this.transform = new window.Transform();
+        this.renderer = new Renderer(window.Color.Red, shape);
+        this.transform = new Transform();
         this.transform.scale = new Vector2(20, 20);
         Engine.PushGameObject(this);
 
