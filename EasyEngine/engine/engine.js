@@ -141,7 +141,7 @@ window.Engine = class Engine{
         this.#updates.push(method);
     }
     static PopUpdate(method) {
-        this.#updates.pop(method);
+        this.#updates.splice(method);
     }
 
     static PushGameObject(obj){
@@ -152,7 +152,7 @@ window.Engine = class Engine{
     }
     static PopGameObject(obj){
         this.gameobjectCount-=1;
-        this.#gameobjects.pop(obj);
+        this.#gameobjects.splice(obj);
     }
 
     static Start(canvas_id){
