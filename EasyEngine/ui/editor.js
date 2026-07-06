@@ -50,14 +50,16 @@ let go_target = null;
 let selected_id = -1;
 let ui_id = -1;
 
-inspector_memory = {};
-i_count = 0; 
+let inspector_memory = {};
+let i_count = 0; 
 
-current_component = "";
+let current_component = "";
 
-delete_btns = {};
+let delete_btns = {};   // list of buttons that delete their component from gameoject
 
+let del_go_btns = []; // List of buttons that delete their gameobject
 
+    
 
 // create component inspector map
 
@@ -133,13 +135,8 @@ window.addEventListener('engine-loaded', function () {
             target.enabled = e.target.checked;
         }
     });
-
     inspector.addEventListener('click', (e) => {
         if (e.target.id) {
-            if (e.target.id.includes("del")) {  // delete component
-                inspector_memory[e.target.id.split("-")[1]].reference.gameObject.RemoveComponent(inspector_memory[e.target.id.split("-")[1]].reference);
-                UpdateInspector();
-            }
             if(e.target.id == "new-comp"){  // new Component
                 component_name = prompt("Name of new component?");
                 if(component_name in components){   // add pre-existing component
@@ -149,14 +146,30 @@ window.addEventListener('engine-loaded', function () {
                 else{       // make new component prompt
                     alert(`Invalid Component Name. If this is not supposed to happen, Clicking the 'Load' button and selecting your project folder should work!`);
                 }
+                Engine.RenderFrame(); // just 1 frame for the engine to preview the changes
+            }
+            else if (e.target.id.startsWith("del-")) {  // delete component
+                inspector_memory[e.target.id.split("-")[1]].reference.gameObject.RemoveComponent(inspector_memory[e.target.id.split("-")[1]].reference);
+                UpdateInspector();
+                Engine.RenderFrame(); // just 1 frame for the engine to preview the changes
             }
         }
     });
 
     hierarchy.addEventListener('click', (e) => {
-        if(e.target.id == "new-go"){
+        if(e.target.id == "new-go"){    // make gameobject
             new GameObject("Empty GameObject");
         }
+        else if(e.target.id.startsWith("del_go")){
+            let target_to_delete = Engine.GetGameObject(e.target.id.split("-")[1]);
+            if(target_to_delete){
+                target_to_delete.Destroy();
+            }      
+            else{
+                console.log("target was null. not deleting");
+            }
+        }
+        UpdateHierarchy();
     });
 
     // input field edited in inspector
@@ -211,6 +224,8 @@ window.addEventListener('engine-loaded', function () {
         } else {
             console.error(`Could not find component or variable for ID: ${e.target.id}`);
         }
+
+        Engine.RenderFrame(); // just 1 frame for the engine to preview the changes
     });
 
     // Update FPS
@@ -258,11 +273,13 @@ function UpdateHierarchy() {
         let del = document.createElement('button');
         del.className = "no-margin-far-right";
         del.innerText = "delete";
-        del.id = obj.id;
+        del.id = "del_go-"+obj.id;
         div.appendChild(del);
         hierarchy.appendChild(div);
         div.addEventListener('click', ObjectClicked);
     });
+
+    
 }
 
 function ObjectClicked(e) {
@@ -297,7 +314,7 @@ function UpdateInspector() {
 
     document.getElementById("go-name").value = target.name;
     document.getElementById("go-tag").value = target.tag;
-    //document.getElementById("go-enabled").checked = target.enabled;
+    document.getElementById("go-enabled").checked = target.enabled;
 
     // go found. get compoentns -> display components!
     inspector_base.style.display = "block";
@@ -335,10 +352,11 @@ function CreateAddComponentBTN(){
     let div = document.createElement('div');
     div.style = "display: flex; justify-content: center; align-items: center; margin-top: 15px;";
     let btn = document.createElement('button');
-    btn.innerText = "New Component";
+    btn.innerText = "Add Component";
     btn.id = "new-comp";
     btn.className = "center";
     div.appendChild(btn); 
+    
     inspector.appendChild(div); 
 }
 
@@ -404,8 +422,19 @@ function CreateComponentField(name, value, _component_reference) {
         let field = document.createElement('div');
         field.className = "inspector-field";
         
+        if(name.startsWith("TITLE_")){
+            let fLabel = document.createElement('p');
+            fLabel.className = "inspector-title";
+            fLabel.innerText = value;
 
-        if (value instanceof Vector2 || value instanceof Color) { // custom value
+            inspector_fields.push(new Inspector_Field(name,
+                 value,
+                  _component_reference, 
+                  current_component + "-" + name));
+
+            field.appendChild(fLabel);
+        }
+        else if (value instanceof Vector2 || value instanceof Color) { // custom value
             if (value instanceof Vector2) { // vector2 (2 input fields)
                 let fLabel = document.createElement('p');
                 fLabel.className = "inspector-label";
