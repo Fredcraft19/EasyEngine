@@ -54,7 +54,7 @@ class GameObject{
             if (this.components[i] == component) {
 
                 if(typeof component.Update == "function") Engine.PopUpdate(component._bound_update);
-                if (typeof component.OnDelete == "function") component.OnDelete();
+                if (typeof component.OnDelete == "function") component.OnDestroy();
 
                 this.components.splice(i, 1);
                 break;
