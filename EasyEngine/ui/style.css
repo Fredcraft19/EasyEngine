@@ -223,8 +223,12 @@ input {
     border: 1px solid #333;
     border-radius: 4px;
 }
-
-
+.inspector-title{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 16px;
+    font-weight: bold;
+}
 
 .inspector-label {
     margin-top: 0px;
