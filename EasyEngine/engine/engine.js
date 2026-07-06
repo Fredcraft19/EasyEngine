@@ -167,6 +167,11 @@ window.Engine = class Engine{
         this.gameobjectCount-=1;
         this.#gameobjects.splice(this.#gameobjects.indexOf(obj), 1);
     }
+    static Reset(){
+        this.#gameobjects = [];
+        this.gameobjectCount = 0;
+        this.latestID = 1;
+    }
 
     static Start(canvas_id){
         // cant start the engine twice
