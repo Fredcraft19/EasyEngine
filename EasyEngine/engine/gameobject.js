@@ -57,7 +57,6 @@ class GameObject{
                 if (typeof component.OnDelete == "function") component.OnDelete();
 
                 this.components.splice(i, 1);
-                console.warn(`Successfully deleted ${component.name} from GameObject backend!`);
                 break;
             }
         }
@@ -96,21 +95,10 @@ class GameObject{
         }
         return false;
     }
-    Destroy() {
-        name = "deleted gameobject name";
-        tag = "deleted gameobject tag";
-        id = -1; // deleted id meaning
-        renderer = null;
-        transform = null;
-        components = [];
-
-        Engine.PopGameObject(this);
-    }
     EnabledCheck() {
         
         if (this.enabled != this.#enabled) {
             this.#enabled = this.enabled; // for toggle memory
-            console.log("setup!");
             // does renderer
             if (!this.enabled) {
                 this.#display = this.renderer.display;
@@ -123,21 +111,42 @@ class GameObject{
             try{
                 this.components.forEach(c => {
                     if (typeof c.Update === "function" && c._bound_update) { 
-                        console.log(c.name + ": has Update! TRUE");
                         if (!this.enabled) {
                             if (typeof c.OnDisabled === "function") c.OnDisabled();   
                             Engine.PopUpdate(c._bound_update);   
-                            console.log("asked to delete UpdateMethod!"); 
                         } else {
                             if (typeof c.OnEnabled === "function") c.OnEnabled();
 
                             Engine.AddUpdate(c._bound_update);   
-                            console.log("asked to add back UpdateMethod!"); 
                         }
                     }
                 });
             }
             catch(e) {console.log(e);} 
         }
+    }
+    Destroy() {
+        Engine.PopGameObject(this);
+
+        this.name = "deleted gameobject name";
+        this.tag = "deleted gameobject tag";
+        this.id = -1; // deleted id meaning
+
+        this.enabled = false;
+        this.#enabled = true;
+        this.EnabledCheck();
+
+        this.renderer = null;
+        this.transform = null;
+        
+        this.components.forEach(comp => {
+            if(typeof comp.OnDestroy == "function"){
+                comp.OnDestroy();
+            }
+        });
+
+        // reuse code to stop all component's update loops
+        
+        this.components = [];
     }
 }
