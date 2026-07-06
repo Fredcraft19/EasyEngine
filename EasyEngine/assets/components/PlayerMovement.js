@@ -1,4 +1,4 @@
-window.PlayerMovement = class PlayerMovement extends Component {
+class PlayerMovement extends Component {
     name = "PlayerMovement";
     speed = 15000;
     physic = null;
@@ -24,3 +24,5 @@ window.PlayerMovement = class PlayerMovement extends Component {
         }
     }
 }
+
+window.PlayerMovement = PlayerMovement;
