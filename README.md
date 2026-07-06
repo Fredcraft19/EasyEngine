@@ -3,7 +3,7 @@ A WIP (Work In Progress), Basic, 2D Game Engine written in JavaScript for the Ca
 ## Repository Structure
 The `engine/` folder contains all the core EasyEngine source files, this is the actual engine.
 
-The `components/` folder contains all custom components
+The `assets/` folder contains all dev-made/dev-uploaded files from the editor
 
 The `ui/` folder contains all the editor files
 
