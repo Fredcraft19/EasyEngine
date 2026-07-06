@@ -249,3 +249,43 @@ input {
     border-radius: 3px;
     object-fit: contain;
 }
+
+.asset-parent {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;      
+    padding: 20px;
+
+    max-height: 125px;
+    overflow-y: auto;
+}
+
+.asset-child {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;    
+
+    border: 1px solid #444;
+    border-radius: 8px;     
+    padding: 10px;
+    width: 80px; 
+    
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;    
+}
+
+.asset-child img {
+    width: 40px; 
+    height: 40px;
+    margin-bottom: 5px;
+}
+
+.asset-child p {
+    margin: 0;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 110%;
+}
