@@ -317,7 +317,7 @@ class PhysicBody extends Component {
         return new Vector2(this.body.scale.x, this.body.scale.y);
     }
 
-    OnDelete() {
+    OnDestroy() {
         Matter.Composite.remove(MatterEngine.world, this.body);
     }
 
@@ -332,3 +332,6 @@ class PhysicBody extends Component {
         this.HIDDEN_lastSyncedVy = newVelocity.y;
     }
 }
+
+window.Trigger = Trigger;
+window.PhysicBody = PhysicBody;
