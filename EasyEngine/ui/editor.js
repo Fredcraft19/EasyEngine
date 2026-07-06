@@ -12,6 +12,8 @@ let pause = document.getElementById("pause");
 
 // I/O control
 let load = document.getElementById('load');
+let save = document.getElementById('save');
+let build = document.getElementById('build');
 
 // Hierarchy Varibles
 let new_btn = document.getElementById('new-go');
@@ -107,6 +109,17 @@ window.addEventListener('engine-loaded', function () {
         document.getElementById("inspector-parent").disabled = false;
 
         RunAssetUI();
+    });
+
+    // Save
+    save.addEventListener('click', function () {
+        Builder.SaveProject();
+    });
+
+    // Build
+    build.addEventListener('click', function () {
+        // you know its bad when you need a whole new file for this method..
+        Builder.Build();
     });
 
     // Play
