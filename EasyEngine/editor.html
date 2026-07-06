@@ -18,6 +18,7 @@
             <div class="hierarchy" id="hierarchy">
 
                 <h1>Hierarchy</h1>
+                <button id="new-go" class="no-margin-far-right">New</button>
 
             </div>
 
@@ -37,18 +38,23 @@
                     <p id="fps_count" class="small-text">FPS: -</p>
                 </div>
 
-                <div class="gameview">
+                <div class="gameview" id="gameview">
                     <canvas id="canvas" width="640" height="360"></canvas>
                 </div>
 
-                <div class="asset-area">
+
+                <div class="asset-area" id="asset-parent">
                     <h1>Assets</h1>
 
+                    <div class = "asset-parent" id="assets">
+                        
+                    </div>
                 </div>
+
 
             </div>
 
-            <div class="inspector">
+            <div class="inspector" id="inspector-parent" disabled>
                 <h1>Inspector</h1>
 
                 <div class="inspector-object">
@@ -64,11 +70,7 @@
                     </div>
 
                     <div id="inspecter-components">
-                        
-
                     </div>
-
-
                 </div>
             </div>
 
