@@ -220,16 +220,22 @@ class PhysicBody extends Component {
     transform = null;
     body = null;
 
+    TITLE_1 = "Data";
+
     position = new Vector2(0, 0);
     scale = new Vector2(0, 0);
     rotation = 0;
 
     velocity = new Vector2(0, 0);
 
+    TITLE_2 = "Settings";
     mass = 5;
     friction = 10;
-    solid = false;
     inertia = 0.5;
+    
+    TITLE_3 = "Key Toggles";
+    solid = false;
+    isKinematic = false;
 
     HIDDEN_lastSyncedX = 0;
     HIDDEN_lastSyncedY = 0;
@@ -237,6 +243,7 @@ class PhysicBody extends Component {
     HIDDEN_lastSyncedVx = 0;
     HIDDEN_lastSyncedVy = 0;
     HIDDEN_lastScale = new Vector2(0, 0);
+    HIDDEN_lastMass = 5;
 
     Start(transform, type = "rect") {
         this.transform = transform;
@@ -262,6 +269,7 @@ class PhysicBody extends Component {
         let userMovedIt = this.position.x !== this.HIDDEN_lastSyncedX || this.position.y !== this.HIDDEN_lastSyncedY;
         let userRotatedIt = this.rotation !== this.HIDDEN_lastSyncedRotation;
         let userChangedVelocity = this.velocity.x !== this.HIDDEN_lastSyncedVx || this.velocity.y !== this.HIDDEN_lastSyncedVy;
+        let userChangedMass = this.mass !== this.HIDDEN_lastMass;
 
         if (userMovedIt) {
             Matter.Body.setPosition(this.body, { x: this.position.x, y: this.position.y });
