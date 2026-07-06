@@ -18,6 +18,9 @@ let new_btn = document.getElementById('new-go');
 let hierarchy = document.getElementById("hierarchy");
 let go_count = -1;
 
+// Setup
+let setup_js = null;
+
 // Inspector Variables
 
 // Component Inspector Class
@@ -78,17 +81,32 @@ window.addEventListener('engine-loaded', function () {
         "Transform":Transform,
         "Renderer":Renderer,
         "PhysicBody":PhysicBody,
-        "Trigger":Trigger,
-        "PlayerMovement":PlayerMovement
+        "Trigger":Trigger
     };
 
     // Methods
 
     // I/O Control
     load.addEventListener('click', async function(){
-        alert("When prompted, please choose parent folder of editor.html! And allow for file read/write!");
-        projectFolder = await window.showDirectoryPicker();
-        console.log(projectFolder);
+        console.log("Fetching Direcory..")
+        if(setup_js) setup_js.remove();
+        await FileManager.RequestRootDirectory();
+
+        console.log("Loading Components..")
+        await CustomComponentLoader.LoadComponents();
+
+        console.log("Setting up project..")
+        setup_js = document.createElement('script');
+        setup_js.src = "../EasyEngine/engine/setup/setup.js";
+        setup_js.defer = true;
+        document.head.appendChild(setup_js);
+
+        document.getElementById("hierarchy").disabled = false;
+        document.getElementById("gameview").disabled = false;
+        document.getElementById("asset-parent").disabled = false;
+        document.getElementById("inspector-parent").disabled = false;
+
+        RunAssetUI();
     });
 
     // Play
@@ -139,11 +157,11 @@ window.addEventListener('engine-loaded', function () {
         if (e.target.id) {
             if(e.target.id == "new-comp"){  // new Component
                 component_name = prompt("Name of new component?");
-                if(component_name in components){   // add pre-existing component
-                    target.AddComponent(new components[component_name]());
+                if(window[component_name]){   // add pre-existing component
+                    target.AddComponent(new window[component_name]());
                     UpdateInspector();
                 }
-                else{       // make new component prompt
+                else{       // invalid component
                     alert(`Invalid Component Name. If this is not supposed to happen, Clicking the 'Load' button and selecting your project folder should work!`);
                 }
                 Engine.RenderFrame(); // just 1 frame for the engine to preview the changes
@@ -536,13 +554,18 @@ function UpdateInspectorValues(){
                 else{
                     text_input.value = field.value;
                 }
-                
             }
-            
         }
         catch(e){       // Console Clogger
         }
 
         text_input = null; // reset and to make sure in any bugs, the values aren't overwritten/messed up
     });
+}
+
+function RunAssetUI(){
+    const ref = document.createElement('script');
+    ref.src = "../EasyEngine/ui/assets.js";
+    ref.defer = true;
+    document.head.appendChild(ref);
 }
