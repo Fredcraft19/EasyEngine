@@ -1,18 +1,33 @@
-async function async_main() {
-    // component directorys
-    const scripts = [
-        'PlayerMovement.js',
-        'RandomMovement.js'
-    ];
+class CustomComponentLoader{
+    static injected_scripts = [];
+    static components = null;
+    static async LoadComponents() {
+        if(!FileManager.directory) {
+            return;
+        }
+        this.injected_scripts.forEach(src => {
+           src.remove();
+        });
 
-    // load the scripts
-    for (script of scripts) {
-        const ref = document.createElement('script');
-        ref.src = "../EasyEngine/components/" + script;
-        //   PATH: /components/PlayerMovement.js
-        ref.defer = true;
-        document.head.appendChild(ref);
-        console.log("Loaded Component: " + script);
-    };
+        this.injected_scripts = [];
+
+        let scripts = [];
+        // get custom component directorys
+        
+        let comp_dir = await FileManager.GetDirectory("components", await FileManager.GetDirectory("assets"));
+        this.components = await FileManager.GetFiles(comp_dir);
+        this.components.forEach(c => {
+            scripts.push(c.name);
+        });
+
+        // load the scripts
+        for (script of scripts) {
+            const ref = document.createElement('script');
+            ref.src = "../EasyEngine/assets/components/" + script;
+            ref.defer = true;
+            document.head.appendChild(ref);
+            this.injected_scripts.push(ref);
+            console.log("Loaded Component: " + script);
+        };
+    }   
 }
-async_main();
