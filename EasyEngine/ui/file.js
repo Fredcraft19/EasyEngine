@@ -32,4 +32,25 @@ class FileManager {
         return files; 
     }
 
+    // creates file in dirctory
+    static async MakeFile(name, text, dir = this.directory) {
+        console.log(`writing file: ${name}`)
+        const fh = await dir.getFileHandle(name, { create: true });
+        const writable = await fh.createWritable();
+        await writable.write(text);
+        await writable.close();
+        console.log(`done file: ${name}`)
+    }
+    // creates folder in direcotry
+    static async MakeFolder(parentDirHandle, folderName) {
+    try {
+        newFolderHandle = await parentDirHandle.getDirectoryHandle(folderName, { 
+            create: true 
+        });
+        return newFolderHandle;
+    } catch (err) {
+        console.error("file.js : MakeFolder();\n "+ err);
+    }
+}
+
 }
