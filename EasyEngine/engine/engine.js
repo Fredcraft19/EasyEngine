@@ -39,7 +39,7 @@ window.Engine = class Engine{
     static updates = this.#updates;
 
     // renders frame
-    static #RenderFrame() {
+    static RenderFrame() {
         // Clear Last Frame
         this.#draw.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
 
@@ -110,7 +110,18 @@ window.Engine = class Engine{
 
         this.#UpdatePhysics();
 
-        this.#RenderFrame();     
+        this.RenderFrame();     
+    }
+
+    static GetGameObject(str_id){ // use the engine specified id
+        try{
+            let id = Number(str_id);
+            let output_go = this.#gameobjects.find(go => go.id === id);
+
+            if(output_go) return output_go;
+        }
+        catch(e){console.error("Engine.GetGameObject():\n"+e)}
+        return null;
     }
 
     // sets target fps
@@ -143,9 +154,7 @@ window.Engine = class Engine{
         this.#updates.push(method);
     }
     static PopUpdate(method) {
-        console.log("1: contains requested delete? " + this.#updates.includes(method) == true);
         this.#updates.splice(this.#updates.indexOf(method), 1);
-        console.log("2: contains requested delete? " + this.#updates.includes(method) == true);
     }
 
     static PushGameObject(obj){
