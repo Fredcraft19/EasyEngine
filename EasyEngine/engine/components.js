@@ -7,6 +7,23 @@ class Component{
     transform = null; // gameobject transform - auto set
     gameObject = null;  // gameobject/'parent' reference - auto set
     _bound_update = null; // gameobject will manage this - auto set
+
+    Serialize() {
+        let data = {};
+        let ignore = ["gameObject", "transform", "_bound_update", "body"];
+        let keys = Object.keys(this);
+
+        keys.forEach(key => {
+            if (!ignore.includes(key)) {
+                data[key] = this[key];
+            }
+        });
+        
+        return {
+            type: this.name,
+            data: data
+        };
+    }
 }
 
 class Transform extends Component{
