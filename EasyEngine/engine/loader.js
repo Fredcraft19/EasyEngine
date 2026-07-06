@@ -13,6 +13,8 @@ async function async_main(){
         'engine/input.js',                  // input manager
         'engine/cc-loader.js',              // loads all custom components
 
+        `build/builder.js`,                 // Builder for the editor and project building
+
 
         'engine/event.js'                   // starts the 'engine and loads everything kinda'
     ];
