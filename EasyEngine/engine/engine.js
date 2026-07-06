@@ -18,7 +18,11 @@ window.Engine = class Engine{
 
     static deltaTime = 0.0;
     static fps = 0;
+
     static #targetFps = 60;
+    static get targetFps(){
+        return this.#targetFps;
+    }
 
     static #framecount = 0;
     static #frametime = 0;
