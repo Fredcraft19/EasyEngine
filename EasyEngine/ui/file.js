@@ -22,10 +22,12 @@ class FileManager {
     // returns all files of a directory
     static async GetFiles(dir = this.directory) { 
         const files = []; 
-
-        for await (const [, handle] of dir.entries()) {   
-            if (handle.kind === "file") {     
-                files.push(await handle.getFile()); 
+        let temp = null;
+        for await (const [, handle] of dir.entries()) {  
+            temp = null; 
+            if (handle.kind === "file") {    
+                temp = await handle.getFile();
+                files.push(temp); 
             }  
         } 
 
@@ -42,12 +44,12 @@ class FileManager {
         console.log(`done file: ${name}`)
     }
     // creates folder in direcotry
-    static async MakeFolder(parentDirHandle, folderName) {
+    static async MakeFolder(name, dir = this.directory) {
     try {
-        newFolderHandle = await parentDirHandle.getDirectoryHandle(folderName, { 
+        let newFolder = await dir.getDirectoryHandle(name, { 
             create: true 
         });
-        return newFolderHandle;
+        return newFolder;
     } catch (err) {
         console.error("file.js : MakeFolder();\n "+ err);
     }
