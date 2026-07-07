@@ -10,6 +10,8 @@ window.Engine = class Engine{
     static #interval = null;
     static #running = false;
 
+    static inEditor = false;
+
     static #gameobjects = [];
     static gameobjectCount = 0;
     static latestID = 1;
@@ -128,6 +130,10 @@ window.Engine = class Engine{
         return null;
     }
 
+    static SetGameObjects(new_gos){
+        this.#gameobjects = new_gos;
+    }
+
     // sets target fps
     static SetTargetFPS(newFPS){
         clearInterval(this.#interval);
@@ -193,8 +199,8 @@ window.Engine = class Engine{
             this.DisplaySize.x = window.innerWidth;
             this.DisplaySize.y = window.innerHeight;
             
-            this.#canvas.width = this.WindowSize.x;
-            this.#canvas.height = this.WindowSize.y;
+            this.#canvas.width = this.DisplaySize.x;
+            this.#canvas.height = this.DisplaySize.y;
         }
         else {
             if(this.#memorySize != null) this.DisplaySize = this.#memorySize;
