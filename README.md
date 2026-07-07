@@ -19,12 +19,12 @@ To get just the engine's source files, install the latest relase.
 ## Features
 * Physics with matter.js
 * Ability to view+see FPS
-* WIP Editor
+* Editor
 * Inspector page in Editor to change variables during project runtime
-* Custom Components (Working but WIP for editor)
+* Custom Components
+* Project building
 ## Planned Features
-* Ability to build your project (WORKING ON)
-
+* Saving and loading projects in the editor
 ## Physics
 EasyEngine uses 'Matter.js' for its physics.
 
