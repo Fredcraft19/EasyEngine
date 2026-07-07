@@ -149,4 +149,27 @@ class GameObject{
         
         this.components = [];
     }
+
+    Serialize(){
+        return {
+            name: this.name,
+            tag: this.tag,
+            enabled: this.enabled,
+            display: this.#display,
+
+            transform: {
+                position: { x: this.transform.position.x, y: this.transform.position.y },
+                scale: { x: this.transform.scale.x, y: this.transform.scale.y },
+                rotation: this.transform.rotation
+            },
+            renderer: {
+                color: { r: this.renderer.color.r, g: this.renderer.color.g, b: this.renderer.color.b, a: this.renderer.color.a },
+                type: this.renderer.type,
+                display: this.renderer.display
+            },
+
+            components: []
+        }
+    }
+
 }
