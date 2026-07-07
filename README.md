@@ -1,11 +1,13 @@
 # EasyEngine
 A WIP (Work In Progress), Basic, 2D Game Engine written in JavaScript for the Canvas in HTML5. It is meant to be easy and simple to use. Heavily inspired by the Unity Game Engine in structure.
-## Repository Structure
+## EasyEngine File Structure
 The `engine/` folder contains all the core EasyEngine source files, this is the actual engine.
 
 The `assets/` folder contains all dev-made/dev-uploaded files from the editor
 
 The `ui/` folder contains all the editor files
+
+The `build/` folder contains the build. DO NOT Delete/touch builder.js. Your build project will be in `build/output/`
 
 Everything in EasyEngine folder is the Editor with an example project. When the editor is 'ready for release'* then there will be the editor, without any example project, in the releases tab of the repository.
 
