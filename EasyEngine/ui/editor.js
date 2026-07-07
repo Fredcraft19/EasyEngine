@@ -78,14 +78,6 @@ window.addEventListener('engine-loaded', function () {
     document.getElementById("tt").innerText = "EasyEngine Editor " + Engine.version;
     document.getElementById("tv").innerText = "EasyEngine " + Engine.version;
 
-    // Component Memory
-    let components = {
-        "Transform":Transform,
-        "Renderer":Renderer,
-        "PhysicBody":PhysicBody,
-        "Trigger":Trigger
-    };
-
     // Methods
 
     // I/O Control
