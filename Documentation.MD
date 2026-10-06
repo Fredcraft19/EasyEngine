@@ -1,7 +1,7 @@
 # EasyEngine Documentation
 
 ## Editor
-Coming Soon..
+Use somewhat like the Unity Editor but its just much worse..
 
 ## Custom Components
 Template component looks like this:
@@ -18,4 +18,5 @@ class COMPONENTNAME extends Component {
 }
 ```
 
-More on this soon..
+Sorry for a lack of Documentation. I'm working with a friend on a [C++ GameEngine](https://github.com/carrotking362-design/Vulkan-Game-Engine) in Vulkan instead so yeah...
+
