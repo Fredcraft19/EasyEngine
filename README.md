@@ -18,10 +18,10 @@ Everything in EasyEngine folder is the Editor with an example project. When the 
 To get just the engine's source files, install the latest relase.
 ## Features
 * Physics with matter.js
-* Ability to view+see FPS
+* Ability to view at runtime (via scripting and console logs) and in editor FPS
 * Editor
 * Inspector page in Editor to change variables during project runtime
-* Custom Components
+* Custom Components in JavaScript
 * Project building
 ## Planned Features
 * Saving and loading projects in the editor
