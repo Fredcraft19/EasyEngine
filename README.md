@@ -1,5 +1,5 @@
 # EasyEngine
-A WIP (Work In Progress), Basic, 2D Game Engine written in JavaScript for the Canvas in HTML5. It is meant to be easy and simple to use. Heavily inspired by the Unity Game Engine in structure.
+A Somewhat functional Game Engine made in JavaScript using the HTML5 Canvas. It allows for JavaScript custom scripting via Custom Components. It can build projects which creates a copy of the project without the editor code.
 ## EasyEngine File Structure
 The `editor.html` file is the one you run to use the editor.
 
